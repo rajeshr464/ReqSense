@@ -1,0 +1,329 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<!-- Header & Context -->
+<div class="flex justify-between items-end mb-8">
+    <div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-on-surface mb-1">{{ dataset.name }}</h1>
+        <p class="text-on-surface-variant text-sm font-body">Real-time cognitive processing overview.</p>
+    </div>
+    <div class="flex gap-2">
+        <div class="px-4 py-2 bg-surface-container-low rounded-lg border border-outline-variant/10 text-xs font-medium flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+            Live Updates
+        </div>
+    </div>
+</div>
+
+<!-- AI Generation Trigger (Replaces KPIs if not loaded) -->
+<div id="blueprint-trigger-container" class="w-full text-center py-16 bg-white border border-slate-100 rounded-3xl mb-8 shadow-sm">
+    <div class="w-20 h-20 rounded-full bg-primary/5 flex items-center justify-center mx-auto mb-6">
+        <i class="fas fa-microchip text-primary text-3xl"></i>
+    </div>
+    <p class="mb-5 text-sm font-bold text-slate-400 uppercase tracking-widest">Cognitive blueprint missing</p>
+    <button id="btn-generate-blueprint" class="inline-block px-10 py-4 font-bold text-center text-white uppercase transition-all bg-gradient-to-r from-primary to-secondary rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-98 text-xs tracking-widest">
+        Generate Analytics Blueprint
+    </button>
+    <!-- Loading spinner -->
+    <div id="loading-spinner" class="hidden mt-6 flex items-center justify-center gap-3">
+        <i class="fas fa-circle-notch animate-spin text-primary"></i>
+        <span class="text-xs text-primary font-black tracking-widest uppercase">Metabolizing Dimensions...</span>
+    </div>
+</div>
+
+<!-- KPI Cards Container -->
+<div id="kpi-body" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 hidden w-full">
+    <!-- Automatically injected by JS -->
+</div>
+
+<!-- Main Visualization Area -->
+<div class="space-y-8 w-full">
+    
+    <!-- Primary Charts Container -->
+    <div id="charts-main-column" class="hidden">
+        <div id="charts-row" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+            <!-- Charts injected here -->
+        </div>
+    </div>
+
+    <!-- AI Insights Bottom Panel -->
+    <div class="w-full">
+        <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm flex flex-col xl:flex-row gap-8 items-start xl:items-center relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-5">
+                <i class="fas fa-brain text-8xl text-slate-200"></i>
+            </div>
+            
+            <div class="flex items-center gap-5 xl:w-1/4 shrink-0 px-4 relative z-10">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
+                    <i class="fas fa-bolt text-white text-2xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-extrabold headline text-on-surface">AI Insights</h2>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Deep Processing</p>
+                </div>
+            </div>
+            
+            <div id="insights-container" class="flex-1 w-full border-t xl:border-t-0 xl:border-l border-slate-50 xl:pl-8 pt-8 xl:pt-0 relative z-10">
+                <div class="text-center w-full py-4 flex flex-col items-center justify-center">
+                    <button id="btn-generate-insights" class="py-4 px-10 bg-slate-50 hover:bg-white text-on-surface text-xs font-black uppercase tracking-widest rounded-xl flex items-center justify-center gap-3 transition-all border border-slate-100 shadow-sm active:scale-95 group">
+                        <i class="fas fa-magic text-primary group-hover:scale-110 transition-transform"></i>
+                        Run Deep Analysis
+                    </button>
+                    <div id="insights-loading" class="hidden mt-4 flex items-center justify-center gap-3">
+                        <i class="fas fa-cog animate-spin text-secondary"></i>
+                        <span class="text-xs text-secondary font-black tracking-widest uppercase">Scanning Anomalies...</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const datasetId = {{ dataset.id }};
+    const csrfToken = "{{ csrf_token }}";
+    
+    // Core structural references
+    const triggerContainer = document.getElementById('blueprint-trigger-container');
+    const btnGenerateBlueprint = document.getElementById('btn-generate-blueprint');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const kpiBody = document.getElementById('kpi-body');
+    const chartsMainColumn = document.getElementById('charts-main-column');
+    const chartsRow = document.getElementById('charts-row');
+
+    const colors = [
+        { border: 'border-primary', text: 'text-primary', icon: 'fa-money-bill-wave', bg: 'bg-primary/5' },
+        { border: 'border-secondary', text: 'text-secondary', icon: 'fa-chart-line', bg: 'bg-secondary/5' },
+        { border: 'border-slate-400', text: 'text-slate-400', icon: 'fa-microchip', bg: 'bg-slate-50' },
+        { border: 'border-indigo-500', text: 'text-indigo-500', icon: 'fa-fingerprint', bg: 'bg-indigo-50' }
+    ];
+
+    function fetchDashboardData() {
+        btnGenerateBlueprint.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+        
+        fetch(`/api/dataset/${datasetId}/data/`)
+            .then(res => res.json())
+            .then(data => {
+                loadingSpinner.classList.add('hidden');
+                if (data.error) {
+                    btnGenerateBlueprint.classList.remove('hidden');
+                } else {
+                    triggerContainer.classList.add('hidden');
+                    kpiBody.classList.remove('hidden');
+                    chartsMainColumn.classList.remove('hidden');
+                    renderDashboard(data.blueprint, data.data);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                loadingSpinner.classList.add('hidden');
+                btnGenerateBlueprint.classList.remove('hidden');
+            });
+    }
+
+    btnGenerateBlueprint.addEventListener('click', () => {
+        btnGenerateBlueprint.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+        
+        fetch(`/api/dataset/${datasetId}/blueprint/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(blueprint => {
+            if (blueprint.error) {
+                alert("Blueprint Error: " + blueprint.error);
+                loadingSpinner.classList.add('hidden');
+                btnGenerateBlueprint.classList.remove('hidden');
+            } else {
+                fetchDashboardData();
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Network Error generating Blueprint.");
+            loadingSpinner.classList.add('hidden');
+            btnGenerateBlueprint.classList.remove('hidden');
+        });
+    });
+
+    function renderDashboard(blueprint, data) {
+        let kpiHtml = '';
+        let colorIdx = 0;
+        
+        for (const [key, val] of Object.entries(data.kpis)) {
+            let numVal = typeof val === 'number' ? val : parseFloat(val);
+            if (isNaN(numVal)) numVal = 0;
+            const formatted = new Intl.NumberFormat('en-US', { notation: "compact" , compactDisplay: "short", maximumFractionDigits: 2 }).format(numVal);
+            
+            const theme = colors[colorIdx % colors.length];
+            kpiHtml += `
+            <div class="bg-white p-6 rounded-2xl border-l-4 ${theme.border} relative overflow-hidden group shadow-sm border-y border-r border-slate-50">
+                <div class="relative z-10">
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">${key}</p>
+                    <h3 class="text-3xl font-extrabold text-slate-900">${formatted}</h3>
+                </div>
+                <div class="absolute right-0 bottom-0 opacity-5 group-hover:opacity-10 transition-all group-hover:scale-110">
+                    <i class="fas ${theme.icon} text-8xl translate-x-4 translate-y-4 ${theme.text}"></i>
+                </div>
+            </div>`;
+            colorIdx++;
+        }
+        kpiBody.innerHTML = kpiHtml || '<div class="col-span-3 text-center text-sm text-slate-400 py-12 border border-slate-100 rounded-2xl bg-white shadow-sm font-bold uppercase tracking-widest">No KPIs configured in blueprint.</div>';
+        
+        chartsRow.innerHTML = '';
+        const chartKeys = Object.keys(data.charts);
+        for (let i = 0; i < chartKeys.length; i++) {
+            const key = chartKeys[i];
+            const chartData = data.charts[key];
+            const chartWrapper = document.createElement('section');
+            
+            // Grouping: Make the first chart span dynamically based on layout
+            let spanClass = "";
+            if (chartKeys.length === 1) spanClass = "lg:col-span-2 xl:col-span-3";
+            else if (i === 0 && chartKeys.length === 2) spanClass = ""; 
+            else if (i === 0 && chartKeys.length % 3 !== 0) spanClass = (chartKeys.length % 3 === 1) ? "lg:col-span-2" : "";
+            
+            chartWrapper.className = `bg-white rounded-3xl p-8 border border-slate-50 shadow-sm flex flex-col w-full h-full ${spanClass} transition-all hover:shadow-md`;
+            chartWrapper.innerHTML = `
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-[10px] uppercase tracking-widest font-black text-slate-400 flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(126,34,206,0.3)]"></span>
+                        ${chartData.title}
+                    </h2>
+                    <div class="flex gap-1">
+                        <div class="w-1.5 h-1.5 rounded-full bg-slate-100"></div>
+                        <div class="w-1.5 h-1.5 rounded-full bg-slate-100"></div>
+                    </div>
+                </div>
+                <div class="relative w-full flex-grow min-h-[350px]">
+                    <canvas id="chart-${i}"></canvas>
+                </div>
+            `;
+            chartsRow.appendChild(chartWrapper);
+            
+            const ctx = document.getElementById(`chart-${i}`).getContext('2d');
+            const cType = ['bar', 'line', 'pie', 'doughnut'].includes(chartData.type?.toLowerCase()) ? chartData.type.toLowerCase() : 'bar';
+            
+            // Adjust chart theme for light mode
+            Chart.defaults.color = '#94a3b8'; 
+            Chart.defaults.font.family = 'Open Sans';
+
+            // Vibrant, colourful charts payload
+            const vibrantColors = [
+                'rgba(171, 163, 255, 0.8)', // Primary (Soft Purple)
+                'rgba(0, 238, 252, 0.8)',   // Tertiary (Cyan)
+                'rgba(255, 110, 132, 0.8)', // Error (Pink/Red)
+                'rgba(66, 165, 245, 0.8)',  // Blue
+                'rgba(255, 202, 40, 0.8)',  // Amber
+                'rgba(102, 187, 106, 0.8)', // Green
+                'rgba(236, 64, 122, 0.8)',  // Pink
+                'rgba(38, 166, 154, 0.8)'   // Teal
+            ];
+            const borderColors = vibrantColors.map(c => c.replace('0.8', '1'));
+
+            new Chart(ctx, {
+                type: cType,
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: chartData.title,
+                        data: chartData.values,
+                        backgroundColor: cType === 'line' ? 'rgba(171, 163, 255, 0.2)' : vibrantColors,
+                        borderColor: cType === 'line' ? '#aba3ff' : borderColors,
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: cType === 'line' ? true : false,
+                        borderRadius: cType === 'bar' ? 4 : 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top' } },
+                    scales: cType !== 'pie' && cType !== 'doughnut' ? {
+                        y: { 
+                            grid: { color: '#f1f5f9', borderDash: [5, 5] },
+                            ticks: { color: '#94a3b8', font: { size: 10, weight: 'bold' } } 
+                        },
+                        x: { 
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { size: 10, weight: 'bold' } } 
+                        }
+                    } : {}
+                }
+            });
+        }
+    }
+    
+    fetchDashboardData();
+
+    // AI Insights Generator Logic
+    const btnGenerateInsights = document.getElementById('btn-generate-insights');
+    const insightsLoading = document.getElementById('insights-loading');
+    const insightsContainer = document.getElementById('insights-container');
+
+    if(btnGenerateInsights) {
+        btnGenerateInsights.addEventListener('click', () => {
+            btnGenerateInsights.classList.add('hidden');
+            insightsLoading.classList.remove('hidden');
+            
+            fetch(`/api/dataset/${datasetId}/insights/`)
+            .then(res => res.json())
+            .then(data => {
+                let html = '<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full">';
+                
+                if (data.insights && Array.isArray(data.insights)) {
+                    data.insights.forEach(insight => {
+                        const cleanInsight = insight.replace(/\*/g, '');
+                        html += `
+                        <div class="p-5 bg-white rounded-2xl border border-slate-100 hover:border-primary/20 transition-all group shadow-sm flex items-start gap-4">
+                            <div class="mt-0.5 p-2 bg-primary/5 rounded-xl text-primary">
+                                <i class="fas fa-magic text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest">Pattern Found</h4>
+                                <p class="text-xs text-slate-600 font-bold leading-relaxed">${cleanInsight}</p>
+                            </div>
+                        </div>`;
+                    });
+                }
+                
+                if (data.anomalies && Object.keys(data.anomalies).length > 0) {
+                    for (const [col, count] of Object.entries(data.anomalies)) {
+                        html += `
+                        <div class="p-5 bg-red-50/30 rounded-2xl border border-red-100 hover:border-red-200 transition-all group shadow-sm flex items-start gap-4">
+                            <div class="mt-0.5 p-2 bg-red-100 rounded-xl text-red-500">
+                                <i class="fas fa-exclamation-triangle text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-[10px] font-black text-red-400 mb-1 uppercase tracking-widest">Anomaly Alert</h4>
+                                <p class="text-xs text-slate-600 font-bold leading-relaxed"><span class="text-red-500 font-black">${count}</span> outliers detected in <span class="text-slate-900">${col}</span></p>
+                            </div>
+                        </div>`;
+                    }
+                } else if (!data.insights || data.insights.length === 0) {
+                    html += `
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 group flex items-center gap-4">
+                        <i class="fas fa-check-circle text-emerald-500"></i>
+                        <p class="text-xs text-slate-500 font-bold">System architecture nominal. No statistical anomalies detected.</p>
+                    </div>`;
+                }
+
+                html += '</div>';
+                insightsContainer.innerHTML = html;
+            })
+            .catch(err => {
+                console.error(err);
+                btnGenerateInsights.classList.remove('hidden');
+                insightsLoading.classList.add('hidden');
+            });
+        });
+    }
+</script>
+{% endblock %}

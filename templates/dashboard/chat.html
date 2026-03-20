@@ -1,0 +1,248 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+
+<!-- TopAppBar Proxy -->
+<header class="flex justify-between items-center w-full px-8 h-16 bg-white border border-slate-100 rounded-2xl mb-6 shadow-sm">
+    <div class="flex items-center gap-4">
+        <h2 class="text-xl font-extrabold tracking-tight text-on-surface flex items-center gap-3">
+            <i class="fas fa-brain text-primary text-xl"></i>
+            AI Query Terminal
+        </h2>
+        <div class="h-4 w-px bg-slate-100"></div>
+        <span class="text-[10px] font-black text-slate-400 tracking-widest uppercase">NODE ID: {{ dataset.pk }}</span>
+    </div>
+</header>
+
+<section class="flex flex-col lg:flex-row w-full rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden transition-all duration-500">
+    
+    <!-- Chat Interface -->
+    <div class="flex flex-col relative w-full lg:w-3/4 lg:border-r border-slate-50 min-h-[500px]">
+        
+        <!-- Chat Scrollable History -->
+        <div id="chat-history" class="p-8 space-y-12 bg-slate-50/30 grow">
+            <!-- Initial Prompts -->
+            <div class="flex justify-start items-start gap-5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+                    <i class="fas fa-robot text-sm text-white"></i>
+                </div>
+                <div class="max-w-2xl space-y-6">
+                    <div class="p-8 bg-white rounded-2xl rounded-tl-none border border-slate-100 shadow-sm">
+                        <p class="text-sm font-medium text-slate-600 leading-relaxed relative z-10">
+                            Hello! I am your <span class="text-primary font-black">ReqSense Cognitive Architect</span>.<br><br>
+                            I have completely metabolized your dataset <span class="bg-primary/10 text-primary px-2 py-0.5 rounded font-bold">"{{ dataset.name }}"</span>. Ask me anything about the underlying patterns within this architecture.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Footer -->
+        <div class="p-8 pt-4 bg-white border-t border-slate-50">
+            <div class="max-w-4xl mx-auto relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl blur opacity-25 group-focus-within:opacity-100 transition duration-500"></div>
+                
+                <div class="relative bg-slate-50 rounded-2xl border-b-4 border-primary flex items-center p-3 shadow-sm transition-all focus-within:bg-white focus-within:shadow-md">
+                    <button class="p-3 text-slate-400 hover:text-primary transition-colors" title="Attach context">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input id="chat-input" class="flex-1 bg-transparent border-none focus:ring-0 text-sm font-bold text-on-surface placeholder:text-slate-300 py-4 px-2" placeholder="Ask anything about your data architecture..." type="text"/>
+                    <div class="flex items-center gap-2 pr-2">
+                        <button id="btn-send-chat" class="w-12 h-12 bg-gradient-to-r from-primary to-secondary text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20">
+                            <i class="fas fa-paper-plane text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-[9px] text-slate-300 mt-6 tracking-widest font-black uppercase">ReqSense Cognitive Engine • Powered by Cerebras LLM</p>
+        </div>
+    </div>
+
+    <!-- Right Panel: Suggested Queries -->
+    <aside class="hidden lg:flex w-80 bg-slate-50 p-8 flex-col gap-8 overflow-y-auto">
+        <div>
+            <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-3">
+                <i class="fas fa-lightbulb text-primary"></i>
+                Execution Prompts
+            </h3>
+            <div class="space-y-4">
+                <button onclick="document.getElementById('chat-input').value='Provide a statistical summary of all numerical columns'; document.getElementById('btn-send-chat').click();" class="w-full text-left p-5 bg-white rounded-2xl border border-slate-100 hover:border-primary/30 transition-all group shadow-sm">
+                    <i class="fas fa-chart-line text-primary text-xs mb-3 block"></i>
+                    <p class="text-xs font-bold text-slate-600 group-hover:text-primary transition-colors leading-relaxed">"Statistical summary of numerical columns"</p>
+                </button>
+                <button onclick="document.getElementById('chat-input').value='Are there any missing values in the dataset?'; document.getElementById('btn-send-chat').click();" class="w-full text-left p-5 bg-white rounded-2xl border border-slate-100 hover:border-secondary/30 transition-all group shadow-sm">
+                    <i class="fas fa-search-minus text-secondary text-xs mb-3 block"></i>
+                    <p class="text-xs font-bold text-slate-600 group-hover:text-secondary transition-colors leading-relaxed">"Check for missing architecture values"</p>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-auto">
+            <div class="p-6 bg-white rounded-2xl border border-slate-100 relative overflow-hidden group shadow-sm">
+                <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+                <h4 class="text-xs font-black text-on-surface mb-1 uppercase tracking-tight">{{ dataset.name }}</h4>
+                <p class="text-[10px] text-slate-400 leading-relaxed mb-6 font-bold uppercase tracking-widest">{{ dataset.num_rows }} cognitive nodes</p>
+                <a href="{% url 'dashboard:index' %}" class="block text-center w-full py-3 text-[10px] font-black uppercase tracking-widest text-primary bg-primary/5 rounded-xl border border-primary/10 hover:bg-primary hover:text-white transition-all">
+                    Switch Node
+                </a>
+            </div>
+        </div>
+    </aside>
+
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<style>
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #7e22ce; }
+</style>
+<script>
+    const datasetId = {{ dataset.id }};
+    const csrfToken = "{{ csrf_token }}";
+
+    const chatInput = document.getElementById('chat-input');
+    const btnSendChat = document.getElementById('btn-send-chat');
+    const chatHistory = document.getElementById('chat-history');
+    
+    let chatMemory = [];
+
+    function appendUserMessage(message) {
+        const div = document.createElement('div');
+        div.className = "flex justify-end items-start gap-5";
+        div.innerHTML = `
+            <div class="max-w-xl p-6 bg-white border border-slate-100 rounded-2xl rounded-tr-none shadow-sm shadow-primary/5">
+                <p class="text-sm font-bold text-slate-700 leading-relaxed">${message}</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100 text-primary">
+                <i class="fas fa-user text-xs"></i>
+            </div>
+        `;
+        chatHistory.appendChild(div);
+        scrollChatToBottom();
+    }
+
+    function appendSystemMessage(htmlPayload, isError = false) {
+        const div = document.createElement('div');
+        div.className = "flex justify-start items-start gap-5";
+        const botIconColor = isError ? "bg-red-500" : "bg-gradient-to-r from-primary to-secondary";
+        const borderContext = isError ? "border-red-100" : "border-slate-100";
+        const textContext = isError ? "text-red-500" : "text-slate-600";
+        const bgContext = isError ? "bg-red-50/50" : "bg-white";
+        
+        div.innerHTML = `
+            <div class="w-10 h-10 rounded-xl ${botIconColor} flex items-center justify-center shrink-0 shadow-lg shadow-primary/20">
+                <i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-robot'} text-sm text-white"></i>
+            </div>
+            <div class="max-w-2xl space-y-6 w-full">
+                <div class="p-8 ${bgContext} rounded-2xl rounded-tl-none border ${borderContext} shadow-sm">
+                    <div class="text-sm font-medium ${textContext} leading-relaxed prose prose-slate prose-strong:text-primary prose-strong:font-black max-w-none">
+                        ${htmlPayload}
+                    </div>
+                    
+                    ${!isError ? `
+                    <div class="flex gap-2 mt-8 pt-6 border-t border-slate-50">
+                        <button class="flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 rounded-xl hover:bg-slate-50 hover:text-primary transition-all" onclick="navigator.clipboard.writeText(this.parentElement.previousElementSibling.innerText); this.innerHTML='<i class=\\'fas fa-check text-xs\\'></i> COPIED';">
+                            <i class="fas fa-copy text-xs"></i> Copy Intel
+                        </button>
+                    </div>` : ''}
+                </div>
+            </div>
+        `;
+        chatHistory.appendChild(div);
+        
+        if (!isError) {
+            // Intercept JSON Chart configurations
+            const chartBlocks = div.querySelectorAll('.ai-generated-chart');
+            chartBlocks.forEach((block, index) => {
+                try {
+                    const configJson = JSON.parse(block.innerText);
+                    const canvasId = 'ai-chart-runtime-' + Date.now() + '-' + index;
+                    
+                    const chartWrapper = document.createElement('div');
+                    chartWrapper.className = "mt-8 p-6 bg-white rounded-2xl border border-slate-100 shadow-sm w-full overflow-x-auto relative group";
+                    chartWrapper.innerHTML = `
+                        <div class="absolute inset-0 bg-primary/[0.02] rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none"></div>
+                        <canvas id="${canvasId}" style="min-width: 400px; max-height: 300px; width: 100%;"></canvas>
+                    `;
+                    
+                    block.parentNode.insertBefore(chartWrapper, block);
+                    
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    new Chart(ctx, configJson);
+                    
+                    block.remove();
+                } catch (e) {
+                    console.error("Failed to parse Cerebras Cognitive Chart mapping:", e);
+                }
+            });
+            
+            // Intercept native HTML tables to apply strict Tailwind architectural classing
+            const tables = div.querySelectorAll('table');
+            tables.forEach(table => {
+                table.className = "w-full text-left text-xs text-slate-600 my-8 border-collapse rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-white";
+                
+                const thead = table.querySelector('thead') || table;
+                const ths = thead.querySelectorAll('th');
+                ths.forEach(th => th.className = "border-b border-slate-50 p-4 font-black uppercase tracking-widest text-primary bg-slate-50/50");
+                
+                const tds = table.querySelectorAll('td');
+                tds.forEach(td => td.className = "border-b border-slate-50 p-4 font-bold text-slate-500");
+            });
+        }
+        
+        scrollChatToBottom();
+    }
+
+    function scrollChatToBottom() {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+
+    btnSendChat.addEventListener('click', () => {
+        const query = chatInput.value.trim();
+        if (!query) return;
+        
+        chatMemory.push({ role: 'user', content: query });
+        if (chatMemory.length > 6) chatMemory = chatMemory.slice(-6);
+        
+        appendUserMessage(query);
+        chatInput.value = '';
+        btnSendChat.innerHTML = '<i class="fas fa-circle-notch animate-spin text-white"></i>';
+        btnSendChat.disabled = true;
+        
+        fetch(`/api/dataset/${datasetId}/chat/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: query, history: chatMemory })
+        })
+        .then(res => res.json())
+        .then(data => {
+            btnSendChat.disabled = false;
+            btnSendChat.innerHTML = '<i class="fas fa-paper-plane text-sm"></i>';
+            
+            if (data.error) {
+                appendSystemMessage(data.error, true);
+            } else {
+                appendSystemMessage(data.answer);
+                chatMemory.push({ role: 'assistant', content: data.answer.replace(/<[^>]*>?/gm, '') });
+                if (chatMemory.length > 6) chatMemory = chatMemory.slice(-6);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            btnSendChat.disabled = false;
+            btnSendChat.innerHTML = '<i class="fas fa-paper-plane text-sm"></i>';
+            appendSystemMessage('A critical network error occurred fetching the response payload.', true);
+        });
+    });
+    
+    chatInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') btnSendChat.click();
+    });
+</script>
+{% endblock %}

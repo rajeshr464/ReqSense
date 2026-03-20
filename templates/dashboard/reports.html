@@ -1,0 +1,135 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+
+<!-- Top Navigation (TopNavBar) Proxy -->
+<header class="flex justify-between items-center w-full px-8 h-16 bg-white border border-slate-100 rounded-2xl mb-6 shadow-sm">
+    <div class="flex items-center gap-4">
+        <h2 class="text-xl font-extrabold tracking-tight text-on-surface flex items-center gap-3">
+            <i class="fas fa-file-contract text-primary text-xl"></i>
+            Intelligence Reports
+        </h2>
+    </div>
+</header>
+
+<div class="space-y-8">
+    <!-- Bento Hero Section -->
+    <div class="grid grid-cols-12 gap-6">
+        <div class="col-span-12 lg:col-span-8 bg-white p-10 rounded-3xl border border-slate-100 relative overflow-hidden flex flex-col justify-end min-h-[350px] shadow-sm">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+            <div class="relative z-10">
+                <span class="bg-primary/10 text-primary px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase mb-4 inline-block border border-primary/10">Active Source: {{ dataset.name }}</span>
+                <h2 class="text-4xl font-extrabold leading-tight tracking-tight mb-4 max-w-xl text-on-surface">Data Insight Generation Pipeline</h2>
+                <p class="text-slate-500 max-w-lg font-bold text-sm leading-relaxed mb-8">Automated anomaly detection and blueprint schemas can be converted into immutable PDF documents. Once your visualizations are hydrated, invoke the export.</p>
+                
+                <a href="{% url 'api:export_pdf' dataset.id %}" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary to-secondary text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                    <i class="fas fa-file-pdf text-sm"></i>
+                    Trigger PDF Export
+                </a>
+            </div>
+            <div class="absolute right-[-5%] top-[-10%] w-96 h-96 bg-secondary/5 rounded-full blur-[100px]"></div>
+        </div>
+        
+        <div class="col-span-12 lg:col-span-4 space-y-6">
+            <div class="bg-white p-8 rounded-3xl flex flex-col justify-between h-full border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-5">
+                    <i class="fas fa-server text-6xl text-slate-200"></i>
+                </div>
+                <div class="relative z-10">
+                    <h3 class="font-bold text-lg mb-2 text-on-surface">Storage Capacity</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Allocated Processing</span>
+                        <span class="text-xs text-primary font-black">84%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-primary to-secondary h-full w-[84%] rounded-full"></div>
+                    </div>
+                </div>
+                <div class="mt-8 flex items-center justify-between relative z-10 pt-6 border-t border-slate-50">
+                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">System Health</span>
+                    <div class="flex items-center text-emerald-500 text-[10px] font-black uppercase tracking-widest">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                        Optimal
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Content Grid -->
+    <div class="grid grid-cols-12 gap-8">
+        <!-- Main Report List -->
+        <section class="col-span-12 xl:col-span-8 space-y-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-extrabold text-on-surface">Available Exporters</h3>
+            </div>
+            <div class="space-y-4">
+                
+                <!-- Report Item 1 -->
+                <div class="group bg-white hover:bg-slate-50 transition-all p-6 rounded-2xl flex items-center justify-between border border-slate-100 hover:border-primary/20 shadow-sm">
+                    <div class="flex items-center space-x-5">
+                        <div class="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all">
+                            <i class="fas fa-file-pdf text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-700 text-base">Master Analytics Document (.pdf)</h4>
+                            <p class="text-xs text-slate-400 font-bold mt-1 tracking-tight">Generated dynamically • <span class="text-primary">{{ dataset.num_rows }} nodes parsed</span></p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-3 opacity-60 group-hover:opacity-100 transition-opacity">
+                        <a href="{% url 'api:export_pdf' dataset.id %}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-primary hover:text-white rounded-xl transition-all" title="Download PDF">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Empty State Filler -->
+                <div class="group bg-slate-50/50 transition-all p-6 rounded-2xl flex items-center justify-between border-2 border-dashed border-slate-100">
+                    <div class="flex items-center space-x-5 opacity-40">
+                        <div class="w-14 h-14 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
+                            <i class="fas fa-lock text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-400 text-base">Raw Dataset Export (.csv)</h4>
+                            <p class="text-[10px] font-black uppercase text-slate-300 mt-1 tracking-widest">Requires Enterprise License</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Sidebar Settings -->
+        <aside class="col-span-12 xl:col-span-4 space-y-6">
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="flex items-center space-x-4 mb-8">
+                    <div class="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3 class="font-extrabold text-lg text-on-surface">Execution Intel</h3>
+                </div>
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Sensitivity Scaler</label>
+                        <div class="flex items-center space-x-4 opacity-75">
+                            <input class="flex-1 accent-primary h-1.5 bg-slate-100 rounded-full appearance-none cursor-not-allowed" type="range" disabled value="75">
+                            <span class="text-xs font-black text-primary">75%</span>
+                        </div>
+                    </div>
+                    <div class="space-y-5 opacity-75">
+                        <div class="flex items-center justify-between cursor-not-allowed">
+                            <div>
+                                <p class="text-sm font-bold text-slate-700">Push Notifications</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Alert on critical variance</p>
+                            </div>
+                            <div class="w-10 h-5 bg-slate-100 rounded-full relative cursor-not-allowed">
+                                <div class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+{% endblock %}

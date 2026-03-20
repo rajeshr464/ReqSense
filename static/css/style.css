@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #09121c 0%, #1a2a3a 100%);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --primary-accent: #00d2ff;
+    --secondary-accent: #3a7bd5;
+    --text-main: #f0f4f8;
+    --text-muted: #a0aec0;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Glassmorphism Cards */
+.card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--card-border) !important;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    color: var(--text-main) !important;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-main) !important;
+}
+
+.card-body {
+    background: transparent !important;
+    color: var(--text-main) !important;
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Elegant Navbar */
+.navbar {
+    background: rgba(9, 18, 28, 0.8) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+}
+.navbar-brand {
+    font-weight: 800;
+    background: -webkit-linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.5rem;
+}
+.nav-link {
+    color: var(--text-main) !important;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.nav-link:hover {
+    color: var(--primary-accent) !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(45deg, var(--secondary-accent), var(--primary-accent));
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+    border: none;
+    box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+    font-weight: 600;
+}
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(56, 239, 125, 0.6);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #f2994a, #f2c94c);
+    border: none;
+    box-shadow: 0 4px 15px rgba(242, 201, 76, 0.4);
+    font-weight: 600;
+    color: #111;
+}
+
+.btn-outline-primary, .btn-outline-secondary, .btn-outline-danger {
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+}
+
+/* Inputs & Forms */
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid var(--card-border) !important;
+    color: #fff !important;
+    border-radius: 8px;
+}
+.form-control::placeholder {
+    color: #8898aa;
+}
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.25) !important;
+    border-color: var(--primary-accent) !important;
+}
+
+/* Custom Badges */
+.badge.bg-secondary {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Dashboard Tweaks */
+canvas {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+#chat-history {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid var(--card-border);
+}
+.bg-white {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #fff !important;
+}
+.text-dark {
+    color: #fff !important;
+}
+.list-group-item {
+    background: transparent !important;
+    border-color: var(--card-border);
+    color: #fff;
+}
+.list-group {
+    border-radius: 8px;
+    overflow: hidden;
+}

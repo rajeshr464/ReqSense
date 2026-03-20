@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ReqSense Dashboard Hub</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7e22ce",
+                        "on-primary": "#ffffff",
+                        "secondary": "#ec4899",
+                        "surface": "#ffffff",
+                        "on-surface": "#0f172a",
+                        "surface-variant": "#f1f5f9",
+                        "on-surface-variant": "#64748b",
+                        "surface-container-low": "#f8fafc",
+                        "surface-container-highest": "#f1f5f9",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#f3e8ff",
+                        "on-primary-container": "#7e22ce",
+                        "outline": "#cbd5e1",
+                        "outline-variant": "#e2e8f0",
+                        "background": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Open Sans", "sans-serif"],
+                        "body": ["Open Sans", "sans-serif"],
+                        "label": ["Open Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.75rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        body { font-family: 'Open Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        h1, h2, h3, .headline { font-family: 'Open Sans', sans-serif; font-weight: 800; }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="text-on-surface overflow-hidden">
+    <!-- TopNavBar -->
+    <header class="bg-white/80 backdrop-blur-md flex justify-between items-center w-full px-6 h-16 border-b border-slate-100 fixed top-0 z-50">
+        <div class="flex items-center gap-8">
+            <a href="{% url 'dashboard:landing' %}" class="flex items-center gap-2 transition-transform hover:scale-105">
+                <i class="fas fa-chart-bar text-primary text-2xl"></i>
+                <span class="text-2xl font-extrabold tracking-tight text-on-surface">ReqSense</span>
+            </a>
+            <div class="hidden md:flex items-center bg-slate-50 px-4 py-1.5 rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-slate-400 text-sm mr-2">search</span>
+                <input class="bg-transparent border-none text-sm focus:ring-0 text-on-surface w-64 placeholder:text-slate-400 font-medium" placeholder="Search architecture..." type="text"/>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="p-2 text-slate-400 hover:bg-slate-50 rounded-xl transition-colors">
+                <span class="material-symbols-outlined">notifications</span>
+            </button>
+            <button class="p-2 text-slate-400 hover:bg-slate-50 rounded-xl transition-colors">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <div class="h-10 w-10 rounded-xl bg-primary-container overflow-hidden border border-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined font-bold">person</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex pt-16 h-screen">
+        <!-- SideNavBar -->
+        <aside class="bg-white fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-4 space-y-2 border-r border-slate-100 z-40">
+            <div class="px-6 mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/10">
+                        <i class="fas fa-chart-bar text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <div class="text-lg font-black text-on-surface leading-tight">ReqSense</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cognitive</div>
+                    </div>
+                </div>
+            </div>
+            <nav class="flex-1 px-3 space-y-1">
+                <!-- Navigation Logic -->
+                {% url 'dashboard:index' as data_url %}
+                
+                {% if dataset %}
+                    {% url 'dashboard:view' dataset.pk as hub_url %}
+                    {% url 'dashboard:chat' dataset.pk as chat_url %}
+                    {% url 'dashboard:reports' dataset.pk as reports_url %}
+                {% else %}
+                    <!-- Disabled URLs if no dataset selected -->
+                    {% url 'dashboard:index' as hub_url %}
+                    {% url 'dashboard:index' as chat_url %}
+                    {% url 'dashboard:index' as reports_url %}
+                {% endif %}
+
+                <!-- Data Management Link (Primary) -->
+                {% if request.path == data_url or not dataset %}
+                <a href="{{ data_url }}" class="bg-gradient-to-r from-primary to-secondary text-white rounded-xl flex items-center gap-3 px-4 py-3 transition-all shadow-lg shadow-primary/20 ring-4 ring-primary/5">
+                    <i class="fas fa-cloud-upload-alt w-5 text-center"></i>
+                    <span class="text-sm font-bold">Data Management</span>
+                </a>
+                {% else %}
+                <a href="{{ data_url }}" class="text-slate-500 hover:text-primary hover:bg-slate-50 rounded-xl flex items-center gap-3 px-4 py-3 transition-all font-semibold">
+                    <i class="fas fa-cloud-upload-alt w-5 text-center"></i>
+                    <span class="text-sm">Data Management</span>
+                </a>
+                {% endif %}
+
+                <!-- Subset Nested Analytics Tabs -->
+                <div class="ml-4 border-l-2 border-slate-50 pl-3 space-y-1 mt-2 mb-4">
+                    <!-- Dashboard Hub Link -->
+                    {% if request.path == hub_url and dataset %}
+                    <a href="{{ hub_url }}" class="bg-slate-50 text-primary rounded-xl flex items-center gap-3 px-3 py-2.5 transition-all font-bold">
+                        <i class="fas fa-th-large w-5 text-center"></i>
+                        <span class="text-xs">Dashboard Hub</span>
+                    </a>
+                    {% elif dataset %}
+                    <a href="{{ hub_url }}" class="text-slate-400 hover:text-primary hover:bg-slate-50 rounded-xl flex items-center gap-3 px-3 py-2.5 transition-all font-semibold">
+                        <i class="fas fa-th-large w-5 text-center"></i>
+                        <span class="text-xs">Dashboard Hub</span>
+                    </a>
+                    {% else %}
+                    <div class="text-slate-200 rounded-xl flex items-center gap-3 px-3 py-2.5 cursor-not-allowed">
+                        <i class="fas fa-th-large w-5 text-center"></i>
+                        <span class="text-xs">Dashboard Hub</span>
+                    </div>
+                    {% endif %}
+    
+                    <!-- AI Query Link -->
+                    {% if request.path == chat_url and dataset %}
+                    <a href="{{ chat_url }}" class="bg-slate-50 text-primary rounded-xl flex items-center gap-3 px-3 py-2.5 transition-all font-bold">
+                        <i class="fas fa-brain w-5 text-center"></i>
+                        <span class="text-xs">AI Query</span>
+                    </a>
+                    {% elif dataset %}
+                    <a href="{{ chat_url }}" class="text-slate-400 hover:text-primary hover:bg-slate-50 rounded-xl flex items-center gap-3 px-3 py-2.5 transition-all font-semibold">
+                        <i class="fas fa-brain w-5 text-center"></i>
+                        <span class="text-xs">AI Query</span>
+                    </a>
+                    {% else %}
+                    <div class="text-slate-200 rounded-xl flex items-center gap-3 px-3 py-2.5 cursor-not-allowed">
+                        <i class="fas fa-brain w-5 text-center"></i>
+                        <span class="text-xs">AI Query</span>
+                    </div>
+                    {% endif %}
+    
+                    <!-- Reports Link -->
+                    {% if request.path == reports_url and dataset %}
+                    <a href="{{ reports_url }}" class="bg-slate-50 text-primary rounded-xl flex items-center gap-3 px-3 py-2.5 transition-all font-bold">
+                        <i class="fas fa-file-contract w-5 text-center"></i>
+                        <span class="text-xs">Reports</span>
+                    </a>
+                    {% elif dataset %}
+                    <a href="{{ reports_url }}" class="text-slate-400 hover:text-primary hover:bg-slate-50 rounded-xl flex items-center gap-3 px-3 py-2.5 transition-all font-semibold">
+                        <i class="fas fa-file-contract w-5 text-center"></i>
+                        <span class="text-xs">Reports</span>
+                    </a>
+                    {% else %}
+                    <div class="text-slate-200 rounded-xl flex items-center gap-3 px-3 py-2.5 cursor-not-allowed">
+                        <i class="fas fa-file-contract w-5 text-center"></i>
+                        <span class="text-xs">Reports</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </nav>
+
+            <!-- Bottom Actions -->
+            <div class="px-4 mt-auto space-y-1 pt-4 border-t border-slate-50">
+                <a href="{% url 'dashboard:index' %}" class="block w-full text-center bg-primary text-white py-3 rounded-xl text-xs font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-95 flex items-center justify-center gap-2 mb-4">
+                    <i class="fas fa-plus text-[10px]"></i>
+                    New Analysis
+                </a>
+                <a href="#" class="text-slate-400 hover:text-primary hover:bg-slate-50 rounded-xl flex items-center gap-3 px-4 py-2 transition-all font-semibold">
+                    <i class="fas fa-question-circle w-5 text-center"></i>
+                    <span class="text-[10px] uppercase tracking-wider">Help</span>
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl flex items-center gap-3 px-4 py-2 transition-all font-semibold">
+                    <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                    <span class="text-[10px] uppercase tracking-wider">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Primary Canvas -->
+        <main class="flex-1 ml-64 overflow-y-auto bg-slate-50 p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

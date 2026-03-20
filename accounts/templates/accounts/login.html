@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ReqSense | Cognitive Architect Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed-dim": "#ffb59c", "on-primary-fixed": "#150066", "surface": "#f8f9fb", "surface-bright": "#f8f9fb",
+                        "secondary": "#5a52af", "on-secondary-container": "#362c89", "surface-container-highest": "#e1e2e4",
+                        "on-tertiary": "#ffffff", "error": "#ba1a1a", "tertiary-fixed": "#ffdbcf", "on-tertiary-container": "#ffcfc0",
+                        "inverse-on-surface": "#f0f1f3", "on-background": "#191c1e", "surface-dim": "#d9dadc", "surface-variant": "#e1e2e4",
+                        "on-secondary-fixed": "#150066", "inverse-surface": "#2e3132", "surface-container": "#edeef0",
+                        "on-secondary-fixed-variant": "#423995", "error-container": "#ffdad6", "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#390c00", "on-error-container": "#93000a", "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff", "on-surface": "#191c1e", "on-secondary": "#ffffff", "on-surface-variant": "#474557",
+                        "primary-fixed": "#e4dfff", "on-primary-fixed-variant": "#3a00df", "primary-fixed-dim": "#c6c0ff",
+                        "outline-variant": "#c8c4da", "tertiary-container": "#ac3600", "inverse-primary": "#c6c0ff",
+                        "primary-container": "#5333ff", "secondary-fixed-dim": "#c6c0ff", "on-tertiary-fixed-variant": "#832700",
+                        "background": "#f8f9fb", "surface-container-low": "#f2f4f6", "primary": "#3a00e1",
+                        "secondary-fixed": "#e4dfff", "surface-tint": "#5232fe", "secondary-container": "#a29afd",
+                        "outline": "#787589", "on-primary-container": "#dad5ff", "surface-container-high": "#e7e8ea", "tertiary": "#842700"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"], "body": ["Manrope", "sans-serif"], "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(25, 37, 64, 0.02); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .shadow-cloud { box-shadow: 0 20px 40px rgba(21, 0, 102, 0.06); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Architectural Elements -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-secondary/5 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Main Content Layout -->
+    <main class="relative z-10 w-full max-w-[1200px] flex flex-col md:flex-row items-stretch justify-center gap-12 px-6">
+        <!-- Branding Section (Asymmetric Editorial Style) -->
+        <div class="flex-1 flex flex-col justify-center py-12">
+            <div class="mb-12">
+                <span class="text-2xl font-black tracking-tighter text-primary-container mb-2 block">ReqSense</span>
+                <div class="w-12 h-1 bg-primary-container rounded-full"></div>
+            </div>
+            <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight text-on-surface leading-[1.1] mb-8">
+                Design with <span class="text-primary">Intelligence.</span>
+            </h1>
+            <p class="text-body-lg text-on-surface-variant max-w-md leading-relaxed mb-12">
+                Experience the next evolution of requirements engineering. Where complex data meets editorial clarity.
+            </p>
+            <div class="relative group max-w-sm">
+                <div class="absolute -inset-1 bg-gradient-to-br from-primary to-secondary opacity-10 rounded-xl group-hover:opacity-20 transition duration-1000"></div>
+                <div class="relative bg-surface-container-low p-6 rounded-xl flex items-center gap-4">
+                    <div class="bg-surface-container-lowest p-3 rounded-full shadow-sm">
+                        <span class="material-symbols-outlined text-primary">insights</span>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/50">Current Status</p>
+                        <p class="text-sm font-semibold text-on-surface">System nodes operational</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form Container -->
+        <div class="flex-1 max-w-md w-full">
+            <div class="bg-white shadow-cloud border border-outline-variant/20 p-8 lg:p-12 rounded-lg flex flex-col relative z-20">
+                <div class="mb-10">
+                    <h2 class="text-2xl font-bold tracking-tight text-on-surface mb-2">Welcome Back</h2>
+                    <p class="text-sm text-on-surface-variant">Access your enterprise intelligence hub.</p>
+                </div>
+                
+                {% if messages %}
+                    <div class="mb-6 space-y-2">
+                    {% for message in messages %}
+                        <div class="p-4 rounded-lg text-sm font-bold {% if message.tags == 'error' %}bg-error-container text-on-error-container{% else %}bg-primary-container/20 text-on-primary-fixed{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if form.non_field_errors %}
+                    <div class="mb-6 space-y-2">
+                        <div class="p-4 rounded-lg text-sm font-bold bg-error-container text-on-error-container">
+                            {{ form.non_field_errors.0 }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Login Form -->
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <!-- Username Field -->
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-on-surface-variant ml-1" for="username">Username</label>
+                        <input name="username" class="w-full px-5 py-4 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline text-on-surface" id="username" placeholder="Type your username..." type="text" required />
+                    </div>
+                    <!-- Password Field -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center ml-1">
+                            <label class="text-sm font-semibold text-on-surface-variant" for="password">Password</label>
+                            <a class="text-xs font-bold text-primary hover:text-primary-container transition-colors" href="#">Forgot Password?</a>
+                        </div>
+                        <input name="password" class="w-full px-5 py-4 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline text-on-surface" id="password" placeholder="••••••••" type="password" required />
+                    </div>
+                    
+                    <!-- CTA Button -->
+                    <button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+                        Sign In
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </form>
+
+                <div class="relative my-10 flex items-center">
+                    <div class="flex-grow border-t border-outline-variant/30"></div>
+                    <span class="px-4 text-xs font-bold text-on-surface-variant/40 uppercase tracking-widest">or continue with</span>
+                    <div class="flex-grow border-t border-outline-variant/30"></div>
+                </div>
+
+                <!-- Footer CTA -->
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-on-surface-variant">
+                        Don't have an account? 
+                        <a class="font-bold text-primary hover:underline" href="{% url 'accounts:register' %}">Request Access</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-center gap-6">
+                <a class="text-xs font-medium text-on-surface-variant/60 hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+                <a class="text-xs font-medium text-on-surface-variant/60 hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+                <a class="text-xs font-medium text-on-surface-variant/60 hover:text-on-surface transition-colors" href="#">Contact Support</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
