@@ -95,8 +95,7 @@ def process_natural_language_query(query, dataset_info, history=[]):
         history_str += f"{role}: {msg.get('content')}\n"
         
     prompt = f"""
-    You are an AI data query generator. Interpret high-level user questions (e.g., "What's the average CSAT?") and respond in one of two modes.
-
+    You are an AI data query generator interacting with a user.
     Dataset Columns and Types:
     {dataset_info}
     
@@ -104,34 +103,40 @@ def process_natural_language_query(query, dataset_info, history=[]):
     {history_str}
     
     Current User Text: "{query}"
+    
+    You must output a single JSON object. Choose ONE of two modes:
+    
+    MODE 1 (Math Operation):
+    - The user explicitly requests a calculation (e.g., sum, average, count). 
+    - Perform the calculation **only on numeric columns**.
+    - If the column is non-numeric, return a JSON with a "chat_response" explaining clearly that the operation cannot be performed.
+    - Fields: "operation", "metric_column", "aggregation_function", "groupby_column" (optional), "filter_column" (optional), etc.
 
-    MODE 1: Math Operation
-    - If the user asks for a calculation (sum, average, groupby, etc.), use this schema so the backend can execute it on the full dataset:
+    MODE 2 (Conversation):
+    - Return a JSON object with the following keys:
     {{
-      "operation": "groupby_agg" OR "filter_agg" OR "metric",
-      "groupby_column": "...",
-      "metric_column": "...",
-      "aggregation_function": "sum" OR "avg" OR "count",
-      "filter_column": "...",
-      "filter_operator": "==",
-      "filter_value": "..."
+      "chat_response": "...",     // plain-language, executive-friendly answer
+      "html_table": "..."         // fully styled HTML table (optional, only if relevant)
     }}
 
-    MODE 2: Conversational / Executive Answer
-    - If the user asks for insights, trends, examples, or says hello, return a JSON object with:
-    {{
-      "chat_response": "layman-friendly explanation of why these data points matter",
-      "html_table": "fully formatted HTML table with <thead> and <tbody>"
-    }}
+    When generating HTML tables:
+    1. Include **column headers** in plain-language terms.
+    2. For numeric columns:
+       - Include rows for: **Lowest, Highest, Average (Typical), Median, % of Total / Max**.
+       - Add a **Contextual Insight** column that explains in plain language what the numbers indicate.
+    3. For categorical columns:
+       - Include **top 5 most frequent values**, with counts and percentages.
+       - Include a **plain-language insight** explaining why these values are significant.
 
-    Requirements for Tables (MODE 2):
-    1. Include Column headers with **plain-language labels**.
-    2. Include relevant percentages or ratios for context where appropriate.
-    3. Include **at least one insight sentence** in the "chat_response" explaining why each row was included.
-    4. Tone must be **simple, clear, business-friendly**, no technical jargon.
-    5. Always explain **why these data points matter** to business decisions.
-    6. If multiple interpretations exist, provide the most **actionable and relevant view** first.
+    Additional Rules:
+    - Always **explain why you chose the data points** in a detailed text paragraph within "chat_response".
+    - Avoid technical jargon: write in **simple, layman, non-technical business terms**.
+    - Never assume any specific industry or dataset structure.
+    - Handle missing or non-numeric values gracefully.
+    - Keep HTML valid and clean for rendering in the app. Use standard <table>, <thead>, <tbody>, <tr>, <th>, <td> tags.
 
+    CRITICAL INSTRUCTION: You MUST generate a novel, intelligent response based on the "Current User Text".
+    
     Return ONLY pure JSON. Do not include markdown blocks like ```json.
     """
     return query_cerebras(prompt)
