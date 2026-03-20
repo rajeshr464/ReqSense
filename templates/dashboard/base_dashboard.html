@@ -79,14 +79,14 @@
     <div class="flex pt-16 h-screen">
         <!-- SideNavBar -->
         <aside class="bg-white fixed left-0 top-0 h-screen w-64 flex flex-col pt-20 pb-4 space-y-2 border-r border-slate-100 z-40">
-            <div class="px-6 mb-8">
+            <div class="px-6 mb-8 mt-2">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/10">
-                        <i class="fas fa-chart-bar text-white text-sm"></i>
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-primary border border-slate-200">
+                        <span class="material-symbols-outlined font-bold text-lg">person</span>
                     </div>
                     <div>
-                        <div class="text-lg font-black text-on-surface leading-tight">ReqSense</div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cognitive</div>
+                        <div class="text-sm font-black text-on-surface leading-tight">{{ request.user.username|title }}</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Cognitive Analyst</div>
                     </div>
                 </div>
             </div>
