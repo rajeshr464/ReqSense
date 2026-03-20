@@ -19,15 +19,23 @@ def generate_insights_and_anomalies(df_path):
     describe_json = df.describe().to_json()
     
     prompt = f"""
-    You are an AI data analyst expert. Analyze the statistical description and generate 3 key business or data quality insights.
-    
-    Statistical Description:
-    {describe_json}
-    
-    Anomalies found (columns with rows where z-score > 3):
-    {json.dumps(anomalies)}
-    
-    Return ONLY a valid JSON array of 3 strings.
+    You are an AI data analyst expert. Analyze the statistical description and detected anomalies (z-score > 3) to generate **3 key business or data-quality insights**.
+
+    Input:
+    - Statistical Description JSON: {describe_json}
+    - Anomalies List: {json.dumps(anomalies)}
+
+    Requirements:
+    1. Provide **plain-language insights** suitable for business managers.
+    2. Explain **why each insight matters**, e.g., impact on operations, trends, or decisions.
+    3. Focus on **actionable or interpretable observations**, not just numbers.
+    4. Return ONLY a valid JSON array of 3 strings:
+    [
+      "Insight 1 explanation in plain business terms",
+      "Insight 2 explanation in plain business terms",
+      "Insight 3 explanation in plain business terms"
+    ]
+    5. Include **contextual reference** to the column or anomaly that led to the insight.
     """
     
     try:
