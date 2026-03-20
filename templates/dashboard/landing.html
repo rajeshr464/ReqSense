@@ -41,6 +41,8 @@
     </script>
 </head>
 <body class="min-h-screen bg-background font-sans antialiased text-foreground">
+    <!-- Background Animation Element -->
+    <div id="vanta-canvas" class="fixed inset-0 z-[-1]"></div>
 
     <!-- Nav -->
     <nav class="border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all shadow-sm">
@@ -66,32 +68,31 @@
             </div>
         </div>
     </nav>
-    <!-- Hero with Animation Background -->
-    <div id="vanta-canvas" class="relative overflow-hidden border-b border-slate-50">
-        <section class="container mx-auto px-4 py-24 md:py-32 text-center max-w-7xl opacity-0 animate-fade-in-up relative z-10" style="animation-delay: 0.1s;">
-            <div class="mx-auto max-w-4xl space-y-8">
-                <h1 class="text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl md:text-7xl leading-[1.15]">
-                    Ask your data anything. <br class="hidden md:block"/>
-                    <span class="bg-gradient-to-r from-primary via-purple-600 to-accent bg-clip-text text-transparent">Get answers instantly.</span>
-                </h1>
-                <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                    Upload your Excel or CSV files and analyze them using natural language. No complex formulas, no SQL — just plain English questions and AI-powered insights.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                    <a href="{% url 'accounts:register' %}" class="w-full sm:w-auto">
-                        <button class="w-full sm:w-auto inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-pink-500 px-8 text-base font-bold text-white shadow-xl shadow-purple-500/30 transition-all hover:scale-105 active:scale-95">
-                            Start Free <i class="fas fa-arrow-right text-sm"></i>
-                        </button>
-                    </a>
-                    <a href="{% url 'accounts:login' %}" class="w-full sm:w-auto">
-                        <button class="w-full sm:w-auto inline-flex h-14 items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-8 text-base font-bold text-foreground transition-all hover:bg-slate-50 hover:border-slate-300 active:scale-95">
-                            Login to Workspace
-                        </button>
-                    </a>
-                </div>
+
+    <!-- Hero -->
+    <section class="container mx-auto px-4 py-24 md:py-32 text-center max-w-7xl opacity-0 animate-fade-in-up" style="animation-delay: 0.1s;">
+        <div class="mx-auto max-w-4xl space-y-8">
+            <h1 class="text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl md:text-7xl leading-[1.15]">
+                Ask your data anything. <br class="hidden md:block"/>
+                <span class="bg-gradient-to-r from-primary via-purple-600 to-accent bg-clip-text text-transparent">Get answers instantly.</span>
+            </h1>
+            <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Upload your Excel or CSV files and analyze them using natural language. No complex formulas, no SQL — just plain English questions and AI-powered insights.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+                <a href="{% url 'accounts:register' %}" class="w-full sm:w-auto">
+                    <button class="w-full sm:w-auto inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-pink-500 px-8 text-base font-bold text-white shadow-xl shadow-purple-500/30 transition-all hover:scale-105 active:scale-95">
+                        Start Free <i class="fas fa-arrow-right text-sm"></i>
+                    </button>
+                </a>
+                <a href="{% url 'accounts:login' %}" class="w-full sm:w-auto">
+                    <button class="w-full sm:w-auto inline-flex h-14 items-center justify-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-8 text-base font-bold text-foreground transition-all hover:bg-slate-50 hover:border-slate-300 active:scale-95">
+                        Login to Workspace
+                    </button>
+                </a>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <!-- How it works -->
     <section class="border-y border-slate-100 bg-slate-50/50">
@@ -275,33 +276,29 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        VANTA.BIRDS({
-            el: "#vanta-canvas",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            backgroundColor: 0xffffff,
-            color1: 0x7e22ce,
-            color2: 0xec4899,
-            colorMode: "lerp",
-            birdSize: 1.50,
-            wingSpan: 30.00,
-            speedLimit: 5.00,
-            separation: 50.00,
-            alignment: 50.00,
-            cohesion: 50.00,
-            quantity: 3.00
-        })
-    });
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+<script>
+VANTA.BIRDS({
+  el: "#vanta-canvas",
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  scaleMobile: 1.00,
+  backgroundColor: 0xffffff,
+  color1: 0x7e22ce,
+  color2: 0xec4899,
+  birdSize: 1.50,
+  wingSpan: 30.00,
+  speedLimit: 5.00,
+  separation: 50.00,
+  alignment: 20.00,
+  cohesion: 20.00,
+  quantity: 3.00
+})
+</script>
 </body>
 </html>
