@@ -138,18 +138,29 @@ def process_natural_language_query(query, dataset_info, history=[]):
 
 def generate_executive_report(dataset_name, kpis_json, anomalies_json):
     prompt = f"""
-    You are an elite enterprise Data Analyst writing a formal executive summary.
-    Dataset Name: "{dataset_name}"
-    
+    You are an elite enterprise Data Analyst. Write a **two-paragraph Executive Intelligence Report** based on the dataset "{dataset_name}", summarizing:
+
+    1. Dataset Health
+    - Missing values, inconsistencies, duplicates
+    - Any notable data quality issues
+
+    2. Trends & Outliers
+    - Key patterns or clusters in numeric and categorical columns
+    - Extreme or anomalous values
+    - Highlight percentages, averages, or ranges in layman terms
+
     Computed Key Performance Indicators (JSON):
     {kpis_json}
     
     Detected Statistical Anomalies (JSON):
     {anomalies_json}
-    
-    Write a cohesive, 2-paragraph "Executive Intelligence Report" summarizing the health, trends, and outliers of this dataset.
-    DO NOT use Markdown asterisks or hashtags. JUST plain text. If you want to separate paragraphs, just use a double newline.
-    Do not return JSON, just the raw text of the report.
+
+    Requirements:
+    - Use **plain business language**, avoiding jargon
+    - Include **contextual interpretation** of numbers (e.g., what high/low values indicate)
+    - Do **not use Markdown formatting**, hashtags, or asterisks
+    - Keep it concise, readable, and executive-friendly
+    - Do not return JSON, just the raw text of the report.
     """
     try:
         api_key = os.environ.get("CEREBRAS_API_KEY")
