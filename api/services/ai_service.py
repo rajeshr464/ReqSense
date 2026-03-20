@@ -95,7 +95,8 @@ def process_natural_language_query(query, dataset_info, history=[]):
         history_str += f"{role}: {msg.get('content')}\n"
         
     prompt = f"""
-    You are an AI data query generator interacting with a user.
+    You are an AI data query generator. Interpret high-level user questions (e.g., "What's the average CSAT?") and respond in one of two modes.
+
     Dataset Columns and Types:
     {dataset_info}
     
@@ -103,35 +104,34 @@ def process_natural_language_query(query, dataset_info, history=[]):
     {history_str}
     
     Current User Text: "{query}"
-    
-    You must output a single JSON object. Choose ONE of two modes:
-    
-    MODE 1 (Math Operation): The user explicitly requested to calculate a number, sum, average, or group the data.
-    Allowed operations: 
-    - "groupby_agg": requires "groupby_column", "metric_column", "aggregation_function"
-    - "filter_agg": requires "filter_column", "filter_operator", "filter_value", "metric_column", "aggregation_function"
-    MODE 2 (Conversation or Data Views): The user said hello, asked a general question, or asked for a visual/report based on previous context.
-    Return a single JSON with a "chat_response" key.
-    - "chat_response": Your HTML reply. NEVER attempt to generate charts or plugins. 
-    - VERY IMPORTANT: If the user asks for data points, tables, or validation, you MUST generate beautifully styled HTML `<table>` elements PLUS a detailed text paragraph explicitly explaining *why* you chose those specific data points to validate your methodology!
-    - TONE DIRECTIVE: You MUST write your explanations and validation summaries in simple, layman, non-technical business terms. AVOID heavy statistical jargon (do not say "standard deviation", "variance", etc). Explain the data simply like you are talking to a non-technical manager. 
-    - If the user just says "hi", say hello concisely! DO NOT OVEREXPLAIN.
-    
-    CRITICAL INSTRUCTION: You MUST generate a novel, intelligent response based on the "Current User Text".
-    
-    Structure Example A (Greeting or Question):
-    User Text: [Any conversational question]
-    {{"chat_response": "[A highly focused, concise HTML response.]"}}
-    
-    Structure Example B (Math Request):
-    User Text: "What is the total revenue?"
-    {{"operation": "metric", "metric_column": "revenue", "aggregation_function": "sum"}}
-    
-    Structure Example C (Visual or Table Request):
-    User Text: [A request to draw a chart, validate with data, or show proof]
-    {{"chat_response": "Here is the data distribution you requested: <br><br><table><thead><tr><th>User</th>...</tr></thead><tbody>...</tbody></table><br><b>Validation Summary:</b> I selected these specific rows because..."}}
 
-    
+    MODE 1: Math Operation
+    - If the user asks for a calculation (sum, average, groupby, etc.), use this schema so the backend can execute it on the full dataset:
+    {{
+      "operation": "groupby_agg" OR "filter_agg" OR "metric",
+      "groupby_column": "...",
+      "metric_column": "...",
+      "aggregation_function": "sum" OR "avg" OR "count",
+      "filter_column": "...",
+      "filter_operator": "==",
+      "filter_value": "..."
+    }}
+
+    MODE 2: Conversational / Executive Answer
+    - If the user asks for insights, trends, examples, or says hello, return a JSON object with:
+    {{
+      "chat_response": "layman-friendly explanation of why these data points matter",
+      "html_table": "fully formatted HTML table with <thead> and <tbody>"
+    }}
+
+    Requirements for Tables (MODE 2):
+    1. Include Column headers with **plain-language labels**.
+    2. Include relevant percentages or ratios for context where appropriate.
+    3. Include **at least one insight sentence** in the "chat_response" explaining why each row was included.
+    4. Tone must be **simple, clear, business-friendly**, no technical jargon.
+    5. Always explain **why these data points matter** to business decisions.
+    6. If multiple interpretations exist, provide the most **actionable and relevant view** first.
+
     Return ONLY pure JSON. Do not include markdown blocks like ```json.
     """
     return query_cerebras(prompt)

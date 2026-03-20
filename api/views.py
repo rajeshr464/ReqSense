@@ -62,6 +62,8 @@ def chat_query(request, dataset_id):
         # Intercept conversational responses before hitting the dataframe processor
         if "chat_response" in json_query:
             answer_html = json_query["chat_response"]
+            if "html_table" in json_query:
+                 answer_html += f"<div class='mt-6 overflow-x-auto'>{json_query['html_table']}</div>"
             return Response({"answer": answer_html, "query_logic": json_query})
             
         df = pd.read_csv(dataset.file_path)
