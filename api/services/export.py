@@ -39,7 +39,9 @@ def generate_pdf_report(dataset, data_results, insights_results):
         Story.append(Paragraph("Key Performance Indicators", styles['Heading2']))
         kpi_data = [["Metric Name", "Value"]]
         for k, v in data_results['kpis'].items():
-            numVal = v if isinstance(v, (int, float)) else 0
+            # Handle both new object format and old flat format
+            val = v.get("value", 0) if isinstance(v, dict) else v
+            numVal = val if isinstance(val, (int, float)) else 0
             kpi_data.append([str(k), f"{numVal:,.2f}"])
         
         t = Table(kpi_data, style=[

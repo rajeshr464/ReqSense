@@ -51,30 +51,39 @@ def query_cerebras(prompt):
 
 def generate_dashboard_blueprint(dataset_info, sample_data_json):
     prompt = f"""
-    You are an AI data analyst expert. Based on the following dataset metadata and sample data, generate a JSON blueprint defining relevant KPIs, aggregations, and chart configurations.
+    You are an AI data analyst expert. Analyze the following dataset metadata and sample data. Generate a **JSON blueprint** defining **relevant KPIs, aggregations, and chart configurations** for an initial dashboard. 
+
+    Requirements:
+    1. Select KPIs that provide **immediate insight into business performance**.
+    2. For each KPI, specify:
+       - metric: the column name
+       - aggregation: type (sum, average, count, etc.)
+       - business_relevance: why this KPI matters in layman terms
+    3. For each chart, specify:
+       - type: (bar, line, pie, etc.)
+       - x_axis: the groupby column
+       - y_axis: the metric column
+       - reason: why this chart effectively visualizes the data in layman terms
     
     Dataset Columns and Types:
     {dataset_info}
     
     Sample Data (first 5 rows):
     {sample_data_json}
-    
-    Return ONLY a valid JSON object with the following structure:
+
+    Only return **a valid JSON object** with this structure:
     {{
-        "kpis": [
-            {{"name": "Total Revenue", "operation": "sum", "column": "revenue_col"}}
-        ],
-        "charts": [
-            {{
-                "title": "Revenue by Category",
-                "type": "bar",
-                "groupby": "category_col",
-                "metric": "revenue_col",
-                "aggregation": "sum"
-            }}
-        ]
+      "kpis": [
+        {{"metric": "...", "aggregation": "...", "business_relevance": "..."}},
+        ...
+      ],
+      "charts": [
+        {{"type": "...", "x_axis": "...", "y_axis": "...", "reason": "..."}},
+        ...
+      ]
     }}
-    
+
+    **Tone:** Layman, non-technical business terms. Explain choices clearly so a non-technical manager can understand why each KPI and chart is included.
     Do not include markdown blocks, just the raw JSON.
     """
     return query_cerebras(prompt)

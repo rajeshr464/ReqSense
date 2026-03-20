@@ -156,7 +156,11 @@
         let kpiHtml = '';
         let colorIdx = 0;
         
-        for (const [key, val] of Object.entries(data.kpis)) {
+        for (const [key, kpiObj] of Object.entries(data.kpis)) {
+            // Handle both new object format and old flat format
+            const val = typeof kpiObj === 'object' ? kpiObj.value : kpiObj;
+            const relevance = typeof kpiObj === 'object' ? kpiObj.relevance : '';
+            
             let numVal = typeof val === 'number' ? val : parseFloat(val);
             if (isNaN(numVal)) numVal = 0;
             const formatted = new Intl.NumberFormat('en-US', { notation: "compact" , compactDisplay: "short", maximumFractionDigits: 2 }).format(numVal);
@@ -165,8 +169,9 @@
             kpiHtml += `
             <div class="bg-white p-6 rounded-2xl border-l-4 ${theme.border} relative overflow-hidden group shadow-sm border-y border-r border-slate-50">
                 <div class="relative z-10">
-                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">${key}</p>
-                    <h3 class="text-3xl font-extrabold text-slate-900">${formatted}</h3>
+                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1">${key}</p>
+                    <h3 class="text-3xl font-extrabold text-slate-900 mb-1">${formatted}</h3>
+                    ${relevance ? `<p class="text-[9px] text-slate-400 font-medium italic leading-tight">${relevance}</p>` : ''}
                 </div>
                 <div class="absolute right-0 bottom-0 opacity-5 group-hover:opacity-10 transition-all group-hover:scale-110">
                     <i class="fas ${theme.icon} text-8xl translate-x-4 translate-y-4 ${theme.text}"></i>
@@ -183,23 +188,23 @@
             const chartData = data.charts[key];
             const chartWrapper = document.createElement('section');
             
-            // Grouping: Make the first chart span dynamically based on layout
             let spanClass = "";
             if (chartKeys.length === 1) spanClass = "lg:col-span-2 xl:col-span-3";
             else if (i === 0 && chartKeys.length === 2) spanClass = ""; 
-            else if (i === 0 && chartKeys.length % 3 !== 0) spanClass = (chartKeys.length % 3 === 1) ? "lg:col-span-2" : "";
-            
             chartWrapper.className = `bg-white rounded-3xl p-8 border border-slate-50 shadow-sm flex flex-col w-full h-full ${spanClass} transition-all hover:shadow-md`;
             chartWrapper.innerHTML = `
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-[10px] uppercase tracking-widest font-black text-slate-400 flex items-center gap-3">
-                        <span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(126,34,206,0.3)]"></span>
-                        ${chartData.title}
-                    </h2>
-                    <div class="flex gap-1">
-                        <div class="w-1.5 h-1.5 rounded-full bg-slate-100"></div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-slate-100"></div>
+                <div class="flex flex-col mb-8">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-[10px] uppercase tracking-widest font-black text-slate-400 flex items-center gap-3">
+                            <span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(126,34,206,0.3)]"></span>
+                            ${chartData.title}
+                        </h2>
+                        <div class="flex gap-1">
+                            <div class="w-1.5 h-1.5 rounded-full bg-slate-100"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-slate-100"></div>
+                        </div>
                     </div>
+                    ${chartData.reason ? `<p class="text-[10px] text-slate-400 font-semibold italic border-l-2 border-slate-100 pl-3 py-1">${chartData.reason}</p>` : ''}
                 </div>
                 <div class="relative w-full flex-grow min-h-[350px]">
                     <canvas id="chart-${i}"></canvas>
