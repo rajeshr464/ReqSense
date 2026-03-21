@@ -102,17 +102,12 @@ DATABASES = {
     )
 }
 
-# FORCE SQLite during Render build step to avoid network unreachable errors
-# Render's build environment often lacks external network access for database connections.
-# We also use port 6543 (pooler) for runtime to avoid IPv6 issues.
-IS_RENDER = os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL")
-if IS_RENDER or os.environ.get("SKIP_DB_CHECK") == "True":
-    # If we are in the RENDER environment (build or start), we still use dj_database_url
-    # but we ensure we fall back to SQLite if the database is strictly unreachable
-    # or if we are explicitly told to skip the check.
-    # However, for the BUILD step, we should ALWAYS use SQLite.
-    # We can detect the build step by looking for common build-only variables
-    if os.environ.get("RENDER_BUILD_ID") or not os.environ.get("DATABASE_URL"):
+# FORCE SQLite during Render build step or whenever database access should be avoided.
+# This prevents build failures due to isolated networking on Render.
+import sys
+IS_BUILD_COMMAND = any(arg in sys.argv for arg in ['collectstatic', 'test', 'check'])
+if os.environ.get("RENDER") or os.environ.get("SKIP_DB_CHECK") == "True":
+    if os.environ.get("RENDER_BUILD_ID") or IS_BUILD_COMMAND or not os.environ.get("DATABASE_URL"):
         DATABASES["default"] = {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
