@@ -105,8 +105,9 @@ DATABASES = {
 # FORCE SQLite during Render build step or whenever database access should be avoided.
 # This prevents build failures due to isolated networking on Render.
 import sys
-IS_BUILD_COMMAND = any(arg in sys.argv for arg in ['collectstatic', 'test', 'check'])
+IS_BUILD_COMMAND = any(arg in sys.argv for arg in ['collectstatic', 'test', 'check', 'migrate'])
 if os.environ.get("RENDER") or os.environ.get("SKIP_DB_CHECK") == "True":
+    # If we are in the RENDER environment, we force SQLite for ANY management command during BUILD
     if os.environ.get("RENDER_BUILD_ID") or IS_BUILD_COMMAND or not os.environ.get("DATABASE_URL"):
         DATABASES["default"] = {
             "ENGINE": "django.db.backends.sqlite3",
