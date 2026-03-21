@@ -175,3 +175,12 @@ widgetsnbextension==4.0.14
 yapf==0.43.0
 zipp==3.23.0
 gunicorn
+
+Django>=5.1.0
+djangorestframework
+django-cors-headers
+psycopg2-binary
+dj-database-url
+django-storages[s3]
+boto3
+supabase
