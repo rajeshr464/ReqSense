@@ -96,6 +96,13 @@ DATABASES = {
     )
 }
 
+# Fix for Render build step: skip DB connection if SKIP_DB_CHECK is True
+if os.environ.get("SKIP_DB_CHECK") == "True":
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
