@@ -32,7 +32,11 @@ DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
-# CSRF Trusted Origins for tunneling (ngrok)
+# Proxy headers for custom domain support (Render/Hostinger)
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# CSRF Trusted Origins for tunneling and custom domains
 CSRF_TRUSTED_ORIGINS = [
     "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
     "https://reqsense.onrender.com",
