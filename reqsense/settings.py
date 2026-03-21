@@ -102,9 +102,11 @@ DATABASES = {
     )
 }
 
-# FORCE SQLite during Render build step to avoid network unreachable errors
-if os.environ.get("RENDER") or os.environ.get("SKIP_DB_CHECK") == "True":
-    # If we are in the build step, we use SQLite to let collectstatic and build scripts pass
+# FORCE SQLite only during the Render BUILD STEP (where RENDER is set but RENDER_INSTANCE_ID is not)
+# At runtime, RENDER_INSTANCE_ID will be present, allowing the app to use Supabase.
+is_build_step = os.environ.get("RENDER") and not os.environ.get("RENDER_INSTANCE_ID")
+
+if is_build_step or os.environ.get("SKIP_DB_CHECK") == "True":
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
