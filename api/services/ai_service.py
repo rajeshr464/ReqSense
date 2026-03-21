@@ -106,36 +106,31 @@ def process_natural_language_query(query, dataset_info, history=[]):
     
     You must output a single JSON object. Choose ONE of two modes:
     
-    MODE 1 (Math Operation):
-    - The user explicitly requests a calculation (e.g., sum, average, count). 
-    - Perform the calculation **only on numeric columns**.
-    - If the column is non-numeric, return a JSON with a "chat_response" explaining clearly that the operation cannot be performed.
-    - Fields: "operation", "metric_column", "aggregation_function", "groupby_column" (optional), "filter_column" (optional), etc.
-
-    MODE 2 (Conversation):
-    - Return a JSON object with the following keys:
-    {{
-      "chat_response": "...",     // plain-language, executive-friendly answer
-      "html_table": "..."         // fully styled HTML table (optional, only if relevant)
-    }}
-
-    When generating HTML tables:
-    1. Include **column headers** in plain-language terms.
-    2. For numeric columns:
-       - Include rows for: **Lowest, Highest, Average (Typical), Median, % of Total / Max**.
-       - Add a **Contextual Insight** column that explains in plain language what the numbers indicate.
-    3. For categorical columns:
-       - Include **top 5 most frequent values**, with counts and percentages.
-       - Include a **plain-language insight** explaining why these values are significant.
-
-    Additional Rules:
-    - Always **explain why you chose the data points** in a detailed text paragraph within "chat_response".
-    - Avoid technical jargon: write in **simple, layman, non-technical business terms**.
-    - Never assume any specific industry or dataset structure.
-    - Handle missing or non-numeric values gracefully.
-    - Keep HTML valid and clean for rendering in the app. Use standard <table>, <thead>, <tbody>, <tr>, <th>, <td> tags.
-
+    MODE 1 (Math Operation): The user explicitly requested to calculate a number, sum, average, or group the data.
+    Allowed operations: 
+    - "groupby_agg": requires "groupby_column", "metric_column", "aggregation_function"
+    - "filter_agg": requires "filter_column", "filter_operator", "filter_value", "metric_column", "aggregation_function"
+    MODE 2 (Conversation or Data Views): The user said hello, asked a general question, or asked for a visual/report based on previous context.
+    Return a single JSON with a "chat_response" key.
+    - "chat_response": Your HTML reply. NEVER attempt to generate charts or plugins. 
+    - VERY IMPORTANT: If the user asks for data points, tables, or validation, you MUST generate beautifully styled HTML `<table>` elements PLUS a detailed text paragraph explicitly explaining *why* you chose those specific data points to validate your methodology!
+    - TONE DIRECTIVE: You MUST write your explanations and validation summaries in simple, layman, non-technical business terms. AVOID heavy statistical jargon (do not say "standard deviation", "variance", etc). Explain the data simply like you are talking to a non-technical manager. 
+    - If the user just says "hi", say hello concisely! DO NOT OVEREXPLAIN.
+    
     CRITICAL INSTRUCTION: You MUST generate a novel, intelligent response based on the "Current User Text".
+    
+    Structure Example A (Greeting or Question):
+    User Text: [Any conversational question]
+    {{"chat_response": "[A highly focused, concise HTML response.]"}}
+    
+    Structure Example B (Math Request):
+    User Text: "What is the total revenue?"
+    {{"operation": "metric", "metric_column": "revenue", "aggregation_function": "sum"}}
+    
+    Structure Example C (Visual or Table Request):
+    User Text: [A request to draw a chart, validate with data, or show proof]
+    {{"chat_response": "Here is the data distribution you requested: <br><br><table><thead><tr><th>User</th>...</tr></thead><tbody>...</tbody></table><br><b>Validation Summary:</b> I selected these specific rows because..."}}
+
     
     Return ONLY pure JSON. Do not include markdown blocks like ```json.
     """
