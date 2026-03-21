@@ -36,6 +36,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 CSRF_TRUSTED_ORIGINS = [
     "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
     "https://reqsense.onrender.com",
+    "https://reqsense.reqsta.com",
 ]
 
 
