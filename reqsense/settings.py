@@ -37,6 +37,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
     "https://reqsense.onrender.com",
     "https://reqsense.reqsta.com",
+    "https://www.reqsta.com",
+    "https://reqsta.com",
 ]
 
 
