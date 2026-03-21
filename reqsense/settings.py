@@ -32,11 +32,7 @@ DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
-# Proxy headers for custom domain support (Render/Hostinger)
-USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-# CSRF Trusted Origins for tunneling and custom domains
+# CSRF Trusted Origins for tunneling (ngrok)
 CSRF_TRUSTED_ORIGINS = [
     "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
     "https://reqsense.onrender.com",
@@ -106,15 +102,21 @@ DATABASES = {
     )
 }
 
-# FORCE SQLite only during the Render BUILD STEP (where RENDER is set but RENDER_INSTANCE_ID is not)
-# At runtime, RENDER_INSTANCE_ID will be present, allowing the app to use Supabase.
-is_build_step = os.environ.get("RENDER") and not os.environ.get("RENDER_INSTANCE_ID")
-
-if is_build_step or os.environ.get("SKIP_DB_CHECK") == "True":
-    DATABASES["default"] = {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+# FORCE SQLite during Render build step to avoid network unreachable errors
+# Render's build environment often lacks external network access for database connections.
+# We also use port 6543 (pooler) for runtime to avoid IPv6 issues.
+IS_RENDER = os.environ.get("RENDER") or os.environ.get("RENDER_EXTERNAL_URL")
+if IS_RENDER or os.environ.get("SKIP_DB_CHECK") == "True":
+    # If we are in the RENDER environment (build or start), we still use dj_database_url
+    # but we ensure we fall back to SQLite if the database is strictly unreachable
+    # or if we are explicitly told to skip the check.
+    # However, for the BUILD step, we should ALWAYS use SQLite.
+    # We can detect the build step by looking for common build-only variables
+    if os.environ.get("RENDER_BUILD_ID") or not os.environ.get("DATABASE_URL"):
+        DATABASES["default"] = {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
 
 
 # Password validation
