@@ -35,6 +35,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 # CSRF Trusted Origins for tunneling (ngrok)
 CSRF_TRUSTED_ORIGINS = [
     "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
+    "https://reqsense.onrender.com",
 ]
 
 
