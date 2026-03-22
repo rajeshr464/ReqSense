@@ -102,12 +102,20 @@ DATABASES = {
     )
 }
 
+# Add connection timeout to avoid startup hangs
+if DATABASES["default"].get("ENGINE") == "django.db.backends.postgresql":
+    DATABASES["default"].setdefault("OPTIONS", {})
+    # 10 second timeout for initial connection
+    DATABASES["default"]["OPTIONS"]["connect_timeout"] = 10
+    print(f"DEBUG: Database configured for {DATABASES['default'].get('NAME')} on port {DATABASES['default'].get('PORT', 'default')}")
+
 # FORCE SQLite during Render build step to avoid network unreachable errors
 # This handles both explicit SKIP_DB_CHECK and automatic detection of build-only commands
 import sys
 RUNNING_BUILD_COMMAND = any(cmd in sys.argv for cmd in ['collectstatic', 'migrate'])
 if os.environ.get("SKIP_DB_CHECK") == "True" or (os.environ.get("RENDER") and RUNNING_BUILD_COMMAND):
     # If we are in the build step, we use SQLite to let collectstatic and build scripts pass
+    print("DEBUG: Forcing SQLite for build/static step")
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
