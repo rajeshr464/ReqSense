@@ -103,7 +103,10 @@ DATABASES = {
 }
 
 # FORCE SQLite during Render build step to avoid network unreachable errors
-if os.environ.get("SKIP_DB_CHECK") == "True":
+# This handles both explicit SKIP_DB_CHECK and automatic detection of build-only commands
+import sys
+RUNNING_BUILD_COMMAND = any(cmd in sys.argv for cmd in ['collectstatic', 'migrate'])
+if os.environ.get("SKIP_DB_CHECK") == "True" or (os.environ.get("RENDER") and RUNNING_BUILD_COMMAND):
     # If we are in the build step, we use SQLite to let collectstatic and build scripts pass
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.sqlite3",
