@@ -47,9 +47,12 @@
     <!-- Nav -->
     <nav class="border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 transition-all shadow-sm">
         <div class="container flex h-16 items-center justify-between mx-auto px-4 lg:px-8 max-w-7xl">
-            <div class="flex items-center gap-2">
-                <i class="fas fa-chart-bar text-primary text-2xl"></i>
-                <span class="text-2xl font-extrabold tracking-tight text-foreground">ReqSense</span>
+            <div class="flex items-center gap-3">
+                <i class="fas fa-chart-bar text-primary text-3xl"></i>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-tight text-foreground leading-none">ReqSense</span>
+                    <span class="text-[8px] font-black text-slate-300 uppercase tracking-[0.2em] mt-1">A Reqsta Module</span>
+                </div>
             </div>
             <div class="flex items-center gap-4">
                 {% if user.is_authenticated %}
@@ -76,8 +79,8 @@
                 Ask your data anything. <br class="hidden md:block"/>
                 <span class="bg-gradient-to-r from-primary via-purple-600 to-accent bg-clip-text text-transparent">Get answers instantly.</span>
             </h1>
-            <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Upload your Excel or CSV files and analyze them using natural language. No complex formulas, no SQL — just plain English questions and AI-powered insights.
+            <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
+                The first modular data architect by <span class="text-primary font-bold">Reqsta</span>. Upload complex datasets and perform neural-speed analysis using natural language. No queries, no complexity—just architectural precision.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
                 <a href="{% url 'accounts:register' %}" class="w-full sm:w-auto">
@@ -97,25 +100,69 @@
     <!-- How it works -->
     <section class="border-y border-slate-100 bg-slate-50/50">
         <div class="container mx-auto px-4 py-24 max-w-5xl">
-            <h2 class="text-center text-4xl font-extrabold text-foreground mb-16 tracking-tight">How it works</h2>
+            <h2 class="text-center text-4xl font-black text-foreground mb-16 tracking-tight">Zero-Config Intelligence</h2>
             <div class="grid gap-10 md:grid-cols-3">
                 <!-- Step 1 -->
                 <div class="text-center group">
-                    <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white border-2 border-purple-100 text-primary text-2xl font-black shadow-lg shadow-purple-100 transition-transform group-hover:-translate-y-2">1</div>
-                    <h3 class="font-bold text-foreground text-xl mb-2">Upload</h3>
-                    <p class="text-base text-muted-foreground leading-relaxed">Drag & drop your unstructured Excel or CSV dataset instantly.</p>
+                    <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[2rem] bg-white border-2 border-purple-100 text-primary text-2xl font-black shadow-lg shadow-purple-100 transition-all group-hover:scale-110 group-hover:rotate-3">01</div>
+                    <h3 class="font-bold text-foreground text-xl mb-2">Ingest</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed font-bold italic">Drag, drop, and let the architect map your nodes.</p>
                 </div>
                 <!-- Step 2 -->
                 <div class="text-center group">
-                    <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white border-2 border-purple-100 text-primary text-2xl font-black shadow-lg shadow-purple-100 transition-transform group-hover:-translate-y-2">2</div>
-                    <h3 class="font-bold text-foreground text-xl mb-2">Analyze</h3>
-                    <p class="text-base text-muted-foreground leading-relaxed">Let the backend Python core cleanse the data & map Pandas structures.</p>
+                    <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[2rem] bg-white border-2 border-purple-100 text-primary text-2xl font-black shadow-lg shadow-purple-100 transition-all group-hover:scale-110 group-hover:-rotate-3">02</div>
+                    <h3 class="font-bold text-foreground text-xl mb-2">Metabolize</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed font-bold italic">Neural structures are built in the Cerebras engine.</p>
                 </div>
                 <!-- Step 3 -->
                 <div class="text-center group">
-                    <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-white text-2xl font-black shadow-xl shadow-purple-500/30 transition-transform group-hover:-translate-y-2">3</div>
-                    <h3 class="font-bold text-foreground text-xl mb-2">Discover</h3>
-                    <p class="text-base text-muted-foreground leading-relaxed">Ask questions in plain English and view autogenerated interactive Charts.</p>
+                    <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-[2rem] bg-primary text-white text-2xl font-black shadow-xl shadow-purple-500/30 transition-all group-hover:scale-110 group-hover:rotate-3">03</div>
+                    <h3 class="font-bold text-foreground text-xl mb-2">Synthesize</h3>
+                    <p class="text-sm text-muted-foreground leading-relaxed font-bold italic">Extract final insights with plain human language.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reqsta Vision (NEW SECTION) -->
+    <section class="container mx-auto px-4 py-28 max-w-7xl overflow-hidden">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2 space-y-8">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/10">
+                    <i class="fas fa-microchip"></i> The Reqsta Vision
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-black text-foreground leading-tight tracking-tight">The first module of <br/><span class="text-primary italic">Modular Intelligence.</span></h2>
+                <p class="text-lg text-muted-foreground font-medium leading-relaxed">
+                    ReqSense isn't just a tool; it's the architectural foundation of the **Reqsta Ecosystem**. We are building a suite of interconnected intelligence modules where data flows seamlessly from raw discovery to executive decision-making.
+                </p>
+                <div class="grid grid-cols-2 gap-6 pt-4">
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                        <h4 class="font-black text-on-surface mb-2">Isolative Vault</h4>
+                        <p class="text-xs text-slate-500 font-bold leading-normal">Your data remains siloed in private neural containers.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100">
+                        <h4 class="font-black text-on-surface mb-2">Cross-Stream Intel</h4>
+                        <p class="text-xs text-slate-500 font-bold leading-normal">Built to scale across the entire Reqsta product suite.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:w-1/2 relative">
+                <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 blur-3xl rounded-full opacity-30"></div>
+                <div class="relative bg-white p-8 rounded-[3rem] border border-slate-100 shadow-2xl overflow-hidden group">
+                    <div class="aspect-video bg-slate-900 rounded-2xl flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                        <div class="text-primary animate-pulse flex flex-col items-center">
+                            <span class="material-symbols-outlined text-7xl font-bold">neurology</span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.5em] mt-4">Neural Link Active</span>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex items-center justify-between">
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">Inference Engine</p>
+                            <h4 class="text-lg font-black text-on-surface">Cerebras-v1 Optimized</h4>
+                        </div>
+                        <div class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest">Live</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -211,6 +258,48 @@
         </div>
     </section>
 
+    <!-- Pricing/Early Access (NEW SECTION) -->
+    <section class="container mx-auto px-4 py-24 max-w-7xl">
+        <div class="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden shadow-2xl shadow-purple-500/10">
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
+            <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-accent/20 rounded-full blur-[100px]"></div>
+            
+            <div class="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <h2 class="text-4xl md:text-6xl font-black leading-tight tracking-tight">Free for individual <br/><span class="text-primary italic">Architects.</span></h2>
+                    <p class="text-lg text-slate-400 font-bold leading-relaxed">
+                        We're in the foundational phase of the Reqsta era. To build the strongest community, ReqSense core features are free for early adopters while we scale our architecture.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4">
+                            <i class="fas fa-check-circle text-emerald-400 text-lg"></i>
+                            <span class="text-sm font-bold text-slate-300">Unlimited Neural Inquiries</span>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <i class="fas fa-check-circle text-emerald-400 text-lg"></i>
+                            <span class="text-sm font-bold text-slate-300">Advanced Pattern Detection</span>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <i class="fas fa-check-circle text-emerald-400 text-lg"></i>
+                            <span class="text-sm font-bold text-slate-300">5 Cognitive Nodes (Datasets)</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-10 border border-white/10 text-center">
+                    <h4 class="text-xl font-black mb-2 uppercase tracking-widest text-primary">Foundation Tier</h4>
+                    <div class="text-7xl font-black my-8">$0<span class="text-sm font-bold text-slate-500 uppercase tracking-widest ml-1">/mo</span></div>
+                    <p class="text-[10px] text-slate-400 font-black mb-10 leading-relaxed uppercase tracking-[0.3em]">Full Access for Early Adoption</p>
+                    <a href="{% url 'accounts:register' %}" class="block">
+                        <button class="w-full py-5 bg-white text-slate-900 text-sm font-black uppercase tracking-widest rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/10">
+                            Secure My Access
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Testimonials (New Content) -->
     <section class="border-t border-slate-100 bg-slate-50/50 py-24">
         <div class="container mx-auto px-4 max-w-6xl">
@@ -245,11 +334,11 @@
     <!-- CTA -->
     <section class="border-t border-slate-100 bg-gradient-to-br from-purple-50/50 via-white to-pink-50/50">
         <div class="container mx-auto px-4 py-24 text-center max-w-4xl">
-            <h2 class="text-4xl font-extrabold text-foreground tracking-tight">Ready to make sense of your data?</h2>
-            <p class="mt-4 text-xl text-muted-foreground leading-relaxed">Join operations teams who trust ReqSense for effortless data analysis.</p>
+            <h2 class="text-4xl md:text-5xl font-black text-foreground tracking-tight leading-tight">Ready to architect your <br/><span class="text-primary italic">Intelligence?</span></h2>
+            <p class="mt-6 text-xl text-muted-foreground font-medium leading-relaxed">Join the Reqsta movement and make sense of your data today.</p>
             <a href="{% url 'accounts:register' %}">
-                <button class="mt-10 inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-700 to-pink-500 px-10 text-base font-bold text-white shadow-xl shadow-purple-500/30 transition-all hover:scale-105 active:scale-95">
-                    Start Using ReqSense — It's Free <i class="fas fa-arrow-right text-sm"></i>
+                <button class="mt-10 inline-flex h-16 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-purple-700 to-pink-500 px-12 text-sm font-black uppercase tracking-widest text-white shadow-2xl shadow-purple-500/30 transition-all hover:scale-105 active:scale-95">
+                    Start Using ReqSense <i class="fas fa-bolt text-xs ml-2"></i>
                 </button>
             </a>
         </div>
@@ -259,10 +348,10 @@
     <footer class="border-t border-slate-100 bg-white py-14">
         <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between font-bold text-slate-400 max-w-7xl">
             <div class="flex items-center gap-3 mb-6 md:mb-0">
-                <i class="fas fa-chart-bar text-primary text-2xl"></i>
-                <div class="flex flex-col">
+                <i class="fas fa-chart-bar text-primary text-3xl"></i>
+                <div class="flex flex-col text-left">
                     <span class="text-foreground font-black leading-none text-lg">ReqSense</span>
-                    <span class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] mt-1">A Product of Reqsta</span>
+                    <span class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] mt-1">A Product of <span class="text-primary font-black">Reqsta</span></span>
                 </div>
             </div>
             <div class="flex flex-col md:items-end gap-2">

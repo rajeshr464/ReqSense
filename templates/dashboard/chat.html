@@ -65,14 +65,12 @@
                 Execution Prompts
             </h3>
             <div class="space-y-4">
-                <button onclick="document.getElementById('chat-input').value='Provide a statistical summary of all numerical columns'; document.getElementById('btn-send-chat').click();" class="w-full text-left p-5 bg-white rounded-2xl border border-slate-100 hover:border-primary/30 transition-all group shadow-sm">
-                    <i class="fas fa-chart-line text-primary text-xs mb-3 block"></i>
-                    <p class="text-xs font-bold text-slate-600 group-hover:text-primary transition-colors leading-relaxed">"Statistical summary of numerical columns"</p>
+                {% for prompt in suggested_prompts %}
+                <button onclick="document.getElementById('chat-input').value='{{ prompt.text|escapejs }}'; document.getElementById('btn-send-chat').click();" class="w-full text-left p-5 bg-white rounded-2xl border border-slate-100 hover:border-{{ prompt.color }}/30 transition-all group shadow-sm">
+                    <i class="fas {{ prompt.icon }} text-{{ prompt.color }} text-xs mb-3 block"></i>
+                    <p class="text-xs font-bold text-slate-600 group-hover:text-{{ prompt.color }} transition-colors leading-relaxed">"{{ prompt.text }}"</p>
                 </button>
-                <button onclick="document.getElementById('chat-input').value='Are there any missing values in the dataset?'; document.getElementById('btn-send-chat').click();" class="w-full text-left p-5 bg-white rounded-2xl border border-slate-100 hover:border-secondary/30 transition-all group shadow-sm">
-                    <i class="fas fa-search-minus text-secondary text-xs mb-3 block"></i>
-                    <p class="text-xs font-bold text-slate-600 group-hover:text-secondary transition-colors leading-relaxed">"Check for missing architecture values"</p>
-                </button>
+                {% endfor %}
             </div>
         </div>
 

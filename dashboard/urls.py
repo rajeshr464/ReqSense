@@ -10,4 +10,5 @@ urlpatterns = [
     path('dashboard/<int:pk>/chat/', views.chat_terminal, name='chat'),
     path('dashboard/<int:pk>/reports/', views.reports_view, name='reports'),
     path('dashboard/<int:pk>/delete/', views.delete_dataset, name='delete'),
+    path('help/', views.help_view, name='help'),
 ]

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.conf import settings
 from .forms import UploadFileForm
 from .models import Dataset
+from .prompts import get_suggested_prompts
 from api.services.data_processor import process_and_save_dataset
 
 def landing(request):
@@ -68,7 +69,11 @@ def view_dataset(request, pk):
 @login_required
 def chat_terminal(request, pk):
     dataset = get_object_or_404(Dataset, pk=pk, user=request.user)
-    return render(request, 'dashboard/chat.html', {'dataset': dataset})
+    suggested_prompts = get_suggested_prompts(dataset)
+    return render(request, 'dashboard/chat.html', {
+        'dataset': dataset,
+        'suggested_prompts': suggested_prompts
+    })
 
 @login_required
 def reports_view(request, pk):
@@ -82,3 +87,7 @@ def delete_dataset(request, pk):
         dataset.delete()
         messages.success(request, f'Dataset "{dataset.name}" deleted successfully.')
     return redirect('dashboard:index')
+
+@login_required
+def help_view(request):
+    return render(request, 'dashboard/help.html')

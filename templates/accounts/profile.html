@@ -1,0 +1,87 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Profile Header -->
+    <div class="mb-10">
+        <h1 class="text-4xl font-black tracking-tight text-on-surface mb-2">Account Intelligence</h1>
+        <p class="text-on-surface-variant text-base">Manage your cognitive analyst credentials.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Sidebar Info -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm text-center relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+                <div class="w-24 h-24 rounded-3xl bg-primary/10 flex items-center justify-center text-primary mx-auto mb-6 relative">
+                    <span class="material-symbols-outlined text-5xl font-bold">person</span>
+                </div>
+                <h3 class="text-xl font-black text-on-surface mb-1">
+                    {% if user.first_name %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                        {{ user.username|title }}
+                    {% endif %}
+                </h3>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Cognitive Analyst</p>
+                <div class="pt-6 border-t border-slate-50 flex justify-center gap-4">
+                    <div class="text-center">
+                        <div class="text-lg font-black text-primary">05</div>
+                        <div class="text-[8px] font-black text-slate-300 uppercase tracking-widest">Active Nodes</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-primary rounded-[2rem] p-8 text-white shadow-lg shadow-primary/20 relative overflow-hidden">
+                <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                <h4 class="text-sm font-black uppercase tracking-widest mb-4 opacity-80">Cognitive Security</h4>
+                <p class="text-xs font-bold leading-relaxed opacity-90">Your data is isolated in the ReqSense Private Intelligence Vault. Clear session data to flush local context.</p>
+            </div>
+        </div>
+
+        <!-- Update Form -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm">
+                <h3 class="text-xl font-black text-on-surface mb-8">Personal Architecture</h3>
+                
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">First Designation</label>
+                            <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-on-surface placeholder:text-slate-300 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter first name">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Last Designation</label>
+                            <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-on-surface placeholder:text-slate-300 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter last name">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Neuro-Communication (Email)</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 text-sm font-bold text-on-surface placeholder:text-slate-300 focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Enter email address">
+                    </div>
+
+                    <div class="pt-8 border-t border-slate-50 flex items-center justify-between">
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Last Auth: {{ user.last_login|date:"M d, Y" }}</p>
+                        <button type="submit" class="px-10 py-4 bg-primary text-white text-xs font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                            Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Optional Card: Account Meta -->
+            <div class="mt-8 p-10 bg-slate-50 border border-slate-100 rounded-[2rem] flex items-center justify-between">
+                <div>
+                    <h4 class="text-sm font-black text-on-surface">System Guardian Status</h4>
+                    <p class="text-xs text-slate-400 font-bold mt-1">Classification: ReqSense Prime Architect</p>
+                </div>
+                <div class="h-12 w-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-primary shadow-sm">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

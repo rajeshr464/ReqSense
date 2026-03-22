@@ -1,0 +1,195 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<!-- Help Header -->
+<div class="mb-10">
+    <h1 class="text-4xl font-black tracking-tight text-on-surface mb-2">Architectural Support</h1>
+    <p class="text-on-surface-variant text-base">Mastering the ReqSense Cognitive Engine.</p>
+</div>
+
+<!-- Help Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    
+    <!-- Guide: Getting Started -->
+    <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+        <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:rotate-6 transition-transform">
+            <i class="fas fa-rocket text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-black text-on-surface mb-3">Core Ingestion</h3>
+        <p class="text-sm text-slate-500 leading-relaxed font-medium mb-6">Learn how to metabolize your CSV and XLSX payloads into structured cognitive nodes.</p>
+        <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-primary/40 text-[10px]"></i>
+                Supported Formats: .CSV, .XLSX
+            </li>
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-primary/40 text-[10px]"></i>
+                Max Payload: 256MB per node
+            </li>
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-primary/40 text-[10px]"></i>
+                Automatic schema detection
+            </li>
+        </ul>
+    </div>
+
+    <!-- Guide: AI Insights -->
+    <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-2xl group-hover:bg-secondary/10 transition-all"></div>
+        <div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:rotate-6 transition-transform">
+            <i class="fas fa-brain text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-black text-on-surface mb-3">Cognitive Querying</h3>
+        <p class="text-sm text-slate-500 leading-relaxed font-medium mb-6">Interact with your data architecture using natural language via the Cerebras Engine.</p>
+        <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-secondary/40 text-[10px]"></i>
+                Natural Language Processing
+            </li>
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-secondary/40 text-[10px]"></i>
+                Dynamic prompt suggestions
+            </li>
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-secondary/40 text-[10px]"></i>
+                Pattern & Anomaly detection
+            </li>
+        </ul>
+    </div>
+
+    <!-- Guide: Security & Storage -->
+    <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-50 rounded-full blur-2xl group-hover:bg-indigo-100 transition-all"></div>
+        <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-500 mb-6 group-hover:rotate-6 transition-transform">
+            <i class="fas fa-vault text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-black text-on-surface mb-3">Vault Security</h3>
+        <p class="text-sm text-slate-500 leading-relaxed font-medium mb-6">Enterprise-grade isolation for your business intelligence assets using Supabase.</p>
+        <ul class="space-y-3">
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-indigo-200 text-[10px]"></i>
+                User-level data isolation
+            </li>
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-indigo-200 text-[10px]"></i>
+                Encrypted file storage
+            </li>
+            <li class="flex items-center gap-3 text-xs font-bold text-slate-400">
+                <i class="fas fa-check-circle text-indigo-200 text-[10px]"></i>
+                Secure API tunneling
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- Expanded Content Section -->
+<div class="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <!-- Advanced Navigation -->
+    <div class="space-y-8">
+        <h2 class="text-2xl font-black text-on-surface flex items-center gap-4">
+            <i class="fas fa-compass text-primary"></i>
+            Advanced Navigation
+        </h2>
+        <div class="space-y-6">
+            <div class="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                <h4 class="text-sm font-black text-on-surface mb-2 uppercase tracking-tight">The Navigation Hub</h4>
+                <p class="text-xs text-slate-500 leading-relaxed font-medium">Use the left sidebar to toggle between your <span class="text-primary font-bold">Node Clusters</span>. Clicking on a dataset name in the hub will focus the AI Engine on that specific architectural context.</p>
+            </div>
+            <div class="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                <h4 class="text-sm font-black text-on-surface mb-2 uppercase tracking-tight">Real-time KPIs</h4>
+                <p class="text-xs text-slate-500 leading-relaxed font-medium">The Dashboard Hub automatically generates a <span class="text-secondary font-bold">Metabolic Blueprint</span> of your data, providing instant visibility into your most critical metrics without manual configuration.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Troubleshooting -->
+    <div class="space-y-8">
+        <h2 class="text-2xl font-black text-on-surface flex items-center gap-4">
+            <i class="fas fa-tools text-amber-500"></i>
+            Troubleshooting
+        </h2>
+        <div class="space-y-4">
+            <div class="flex items-start gap-4 p-4 border-l-4 border-amber-200 bg-white rounded-xl">
+                <div class="text-amber-500 mt-1"><i class="fas fa-exclamation-circle text-sm"></i></div>
+                <div>
+                    <h5 class="text-xs font-black text-on-surface mb-1">Upload Failure: "Invalid Format"</h5>
+                    <p class="text-[10px] text-slate-500 font-bold leading-normal">Ensure your file has a header row and is either a standard .CSV or .XLSX Excel workbook. Protected or encrypted files cannot be processed.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 border-l-4 border-emerald-200 bg-white rounded-xl">
+                <div class="text-emerald-500 mt-1"><i class="fas fa-table text-sm"></i></div>
+                <div>
+                    <h5 class="text-xs font-black text-on-surface mb-1">Excel Formatting Rule</h5>
+                    <p class="text-[10px] text-slate-500 font-bold leading-normal">For optimal mapping, your data must start at <span class="text-emerald-600 font-black">Cell A1</span>. Avoid leaving empty rows or columns before your primary header row in the Excel sheet.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 border-l-4 border-primary/20 bg-white rounded-xl">
+                <div class="text-primary mt-1"><i class="fas fa-info-circle text-sm"></i></div>
+                <div>
+                    <h5 class="text-xs font-black text-on-surface mb-1">AI Response Latency</h5>
+                    <p class="text-[10px] text-slate-500 font-bold leading-normal">Large datasets (50k+ rows) may require additional time for neuro-metabolization. Please wait for the "Scanning" indicator to complete before issuing follow-up queries.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Section -->
+<div class="mt-20 max-w-4xl">
+    <h2 class="text-2xl font-black text-on-surface mb-10 flex items-center gap-3">
+        <i class="fas fa-question-circle text-primary"></i>
+        Frequently Asked Questions
+    </h2>
+    
+    <div class="space-y-4">
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all">
+            <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-slate-50/50 transition-colors">
+                <span class="text-sm font-bold text-slate-700">What is "Neuro-Metabolization"?</span>
+                <i class="fas fa-chevron-down text-xs text-slate-300 group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <div class="px-6 pb-6 text-xs text-slate-500 font-medium leading-relaxed">
+                Neuro-metabolization is our proprietary process of indexing your raw data into the Cerebras Inference Engine. This allows the AI to "understand" the relationships between columns and rows, enabling complex natural language queries and automated anomaly detection.
+            </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all">
+            <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-slate-50/50 transition-colors">
+                <span class="text-sm font-bold text-slate-700">How do I delete a dataset safely?</span>
+                <i class="fas fa-chevron-down text-xs text-slate-300 group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <div class="px-6 pb-6 text-xs text-slate-500 font-medium leading-relaxed">
+                In the <span class="text-primary font-bold">Data Management</span> screen, each node has a "Drop Node" action. Confirming this will permanently remove all architectural metadata and the source file from our Supabase vault. This action cannot be undone.
+            </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all">
+            <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-slate-50/50 transition-colors">
+                <span class="text-sm font-bold text-slate-700">Can I use ReqSense on my mobile device?</span>
+                <i class="fas fa-chevron-down text-xs text-slate-300 group-open:rotate-180 transition-transform"></i>
+            </summary>
+            <div class="px-6 pb-6 text-xs text-slate-500 font-medium leading-relaxed">
+                Yes! ReqSense is fully responsive. The sidebar collapses into a mobile menu toggle, and all bento grids adjust to single-column layouts for high-density analysis on the go.
+            </div>
+        </details>
+    </div>
+</div>
+
+<!-- Support Footer -->
+<div class="mt-20 p-10 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-[2.5rem] border border-primary/10 flex flex-col md:flex-row items-center justify-between gap-10">
+    <div>
+        <h3 class="text-2xl font-black text-on-surface mb-2">Still need architectural clarity?</h3>
+        <p class="text-sm text-slate-500 font-semibold mb-6">Our system engineers are available for high-level technical consultations.</p>
+        <div class="flex gap-4">
+            <a href="mailto:support@reqsta.com" class="px-8 py-3 bg-white text-on-surface text-xs font-black uppercase tracking-widest rounded-xl border border-slate-200 hover:border-primary/30 transition-all shadow-sm">
+                Deploy Support Ticket
+            </a>
+        </div>
+    </div>
+    <div class="w-40 h-40 rounded-full bg-white shadow-xl shadow-primary/10 flex items-center justify-center p-4">
+        <i class="fas fa-headset text- primary text-7xl opacity-10"></i>
+        <i class="fas fa-life-ring text-primary text-6xl absolute animate-pulse"></i>
+    </div>
+</div>
+
+{% endblock %}

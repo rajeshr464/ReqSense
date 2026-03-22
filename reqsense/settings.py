@@ -30,15 +30,17 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-@ddoaf-q)(un4(hkl)*r$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
+# ALLOWED_HOSTS for local dev and ngrok
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1", ".ngrok-free.dev"]
 
 # CSRF Trusted Origins for tunneling (ngrok)
 CSRF_TRUSTED_ORIGINS = [
-    "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
     "https://reqsense.onrender.com",
-    "https://reqsense.reqsta.com",
     "https://www.reqsta.com",
     "https://reqsta.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://noncalculably-endocrinological-maxton.ngrok-free.dev",
 ]
 
 
@@ -151,6 +153,10 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Application configuration
+AUTH_USER_MODEL = "accounts.User"
+CORS_ALLOW_ALL_ORIGINS = True
+
 # Storage and Static Files Configuration
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -159,19 +165,13 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Supabase S3 Storage Settings
-USE_SUPABASE = os.environ.get("USE_SUPABASE_STORAGE") == "True" or not DEBUG
-if USE_SUPABASE and os.environ.get("SUPABASE_S3_ENDPOINT_URL"):
-    AWS_ACCESS_KEY_ID = os.environ.get("SUPABASE_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("SUPABASE_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = os.environ.get("SUPABASE_STORAGE_BUCKET_NAME")
-    AWS_S3_ENDPOINT_URL = os.environ.get("SUPABASE_S3_ENDPOINT_URL")
-    AWS_S3_REGION_NAME = os.environ.get("SUPABASE_S3_REGION_NAME", "us-east-1")
-    AWS_S3_FILE_OVERWRITE = False
-    AWS_QUERYSTRING_AUTH = False
-    AWS_DEFAULT_ACL = None
-    
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# Supabase Storage Activation Logic
+USE_SUPABASE = os.environ.get("USE_SUPABASE_STORAGE") == "True"
+if USE_SUPABASE:
+    DEFAULT_FILE_STORAGE = "reqsense.storage.SupabaseStorage"
+    SUPABASE_URL = os.environ.get("SUPABASE_URL")
+    SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+    SUPABASE_STORAGE_BUCKET = os.environ.get("SUPABASE_STORAGE_BUCKET", "datasets")
 else:
     DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
