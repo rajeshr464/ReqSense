@@ -102,17 +102,13 @@ DATABASES = {
     )
 }
 
-# FORCE SQLite during Render build step or whenever database access should be avoided.
-# This prevents build failures due to isolated networking on Render.
-import sys
-IS_BUILD_COMMAND = any(arg in sys.argv for arg in ['collectstatic', 'test', 'check', 'migrate'])
-if os.environ.get("RENDER") or os.environ.get("SKIP_DB_CHECK") == "True":
-    # If we are in the RENDER environment, we force SQLite for ANY management command during BUILD
-    if os.environ.get("RENDER_BUILD_ID") or IS_BUILD_COMMAND or not os.environ.get("DATABASE_URL"):
-        DATABASES["default"] = {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+# FORCE SQLite during Render build step to avoid network unreachable errors
+if os.environ.get("SKIP_DB_CHECK") == "True":
+    # If we are in the build step, we use SQLite to let collectstatic and build scripts pass
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 
 
 # Password validation
@@ -185,3 +181,24 @@ if not DEBUG or os.environ.get("USE_SUPABASE_STORAGE") == "True":
     }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
