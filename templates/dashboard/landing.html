@@ -3,12 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReqSense AI • Make Sense of Your Data</title>
+    <title>ReqSense AI • Modular Intelligence & Data Architect</title>
+    <meta name="description" content="ReqSense is the world's first modular data architect. Upload datasets and get instant, AI-powered business insights with natural language querying. Built by Reqsta." />
+    <meta name="keywords" content="AI Data Analytics, ReqSense, Reqsta, Data Intelligence, NLP BI, Automated Dashboards, Cerebras Engine" />
+    <meta name="author" content="Reqsta" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://reqsense.reqsta.com/" />
+    <meta property="og:title" content="ReqSense AI • Modular Intelligence & Data Architect" />
+    <meta property="og:description" content="The first modular data architect. Upload complex datasets and perform neural-speed analysis using natural language." />
+    <meta property="og:image" content="https://reqsense.reqsta.com/static/img/reqsense-og.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://reqsense.reqsta.com/" />
+    <meta property="twitter:title" content="ReqSense AI • Modular Intelligence & Data Architect" />
+    <meta property="twitter:description" content="The first modular data architect. Upload complex datasets and perform neural-speed analysis using natural language." />
+    <meta property="twitter:image" content="https://reqsense.reqsta.com/static/img/reqsense-og.png" />
+
+    <link rel="canonical" href="https://reqsense.reqsta.com/" />
+    <meta name="theme-color" content="#7e22ce" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script>
       tailwind.config = {
         theme: {
@@ -148,22 +171,120 @@
             </div>
             <div class="lg:w-1/2 relative">
                 <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 blur-3xl rounded-full opacity-30"></div>
-                <div class="relative bg-white p-8 rounded-[3rem] border border-slate-100 shadow-2xl overflow-hidden group">
-                    <div class="aspect-video bg-slate-900 rounded-2xl flex items-center justify-center relative overflow-hidden">
+                <div class="relative bg-white p-6 rounded-[3rem] border border-slate-100 shadow-2xl overflow-hidden group">
+                    <!-- Intelligence Slider Container -->
+                    <div id="intel-slider" class="aspect-video bg-slate-900 rounded-2xl relative overflow-hidden">
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-                        <div class="text-primary animate-pulse flex flex-col items-center">
-                            <span class="material-symbols-outlined text-7xl font-bold">neurology</span>
-                            <span class="text-[10px] font-black uppercase tracking-[0.5em] mt-4">Neural Link Active</span>
+                        
+                        <!-- Slide 1: Ingest -->
+                        <div class="intel-slide absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 opacity-100 translate-y-0" data-index="0">
+                            <div class="relative mb-6">
+                                <span class="material-symbols-outlined text-7xl text-primary animate-bounce">database</span>
+                                <div class="absolute -top-4 -right-4 flex gap-1">
+                                    <span class="h-2 w-2 rounded-full bg-accent animate-ping"></span>
+                                    <span class="h-2 w-2 rounded-full bg-primary animate-ping" style="animation-delay: 0.2s"></span>
+                                </div>
+                            </div>
+                            <h4 class="text-xl font-black text-white mb-2 uppercase tracking-widest">Architectural Ingestion</h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">Mapping Data Nodes...</p>
+                        </div>
+
+                        <!-- Slide 2: Metabolize -->
+                        <div class="intel-slide absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 opacity-0 translate-y-8" data-index="1">
+                            <span class="material-symbols-outlined text-8xl text-accent animate-pulse">neurology</span>
+                            <div class="mt-6 flex gap-2">
+                                <div class="h-1 w-12 bg-slate-800 rounded-full overflow-hidden">
+                                    <div class="h-full bg-accent animate-[loading_2s_infinite]"></div>
+                                </div>
+                            </div>
+                            <h4 class="text-xl font-black text-white mb-2 uppercase tracking-widest mt-4">Neural Metabolism</h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">Optimizing Inference...</p>
+                        </div>
+
+                        <!-- Slide 3: Synthesize -->
+                        <div class="intel-slide absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 opacity-0 translate-y-8" data-index="2">
+                            <div class="flex items-end gap-2 mb-6">
+                                <div class="w-4 bg-primary rounded-t-sm animate-[grow_1s_ease-out_forwards]" style="height: 40px"></div>
+                                <div class="w-4 bg-accent rounded-t-sm animate-[grow_1s_ease-out_0.2s_forwards]" style="height: 70px"></div>
+                                <div class="w-4 bg-primary rounded-t-sm animate-[grow_1s_ease-out_0.4s_forwards]" style="height: 55px"></div>
+                                <div class="w-4 bg-accent rounded-t-sm animate-[grow_1s_ease-out_0.6s_forwards]" style="height: 85px"></div>
+                            </div>
+                            <h4 class="text-xl font-black text-white mb-2 uppercase tracking-widest">Logic Synthesis</h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">Insights Ready.</p>
                         </div>
                     </div>
+
+                    <!-- Slider Controls/Status -->
                     <div class="mt-8 flex items-center justify-between">
-                        <div>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">Inference Engine</p>
-                            <h4 class="text-lg font-black text-on-surface">Cerebras-v1 Optimized</h4>
+                        <div class="flex flex-col">
+                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-2">System Status</p>
+                            <div class="flex items-center gap-2">
+                                <div class="flex gap-1">
+                                    <div class="intel-dot h-1.5 w-4 rounded-full bg-primary transition-all duration-500" data-index="0"></div>
+                                    <div class="intel-dot h-1.5 w-1.5 rounded-full bg-slate-200 transition-all duration-500" data-index="1"></div>
+                                    <div class="intel-dot h-1.5 w-1.5 rounded-full bg-slate-200 transition-all duration-500" data-index="2"></div>
+                                </div>
+                                <span id="intel-status-text" class="text-xs font-black text-foreground uppercase tracking-wider ml-2">Active Ingestion</span>
+                            </div>
                         </div>
-                        <div class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest">Live</div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Cerebras-v1</span>
+                            <div class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 text-[9px] font-black uppercase tracking-widest border border-emerald-100 flex items-center gap-2">
+                                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Live
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <style>
+                    @keyframes loading {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(100%); }
+                    }
+                    @keyframes grow {
+                        0% { height: 0; }
+                    }
+                </style>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const slides = document.querySelectorAll('.intel-slide');
+                        const dots = document.querySelectorAll('.intel-dot');
+                        const statusText = document.getElementById('intel-status-text');
+                        const statuses = ['Active Ingestion', 'Neural Metabolism', 'Logic Synthesis'];
+                        let currentSlide = 0;
+
+                        function showSlide(index) {
+                            slides.forEach((slide, i) => {
+                                if (i === index) {
+                                    slide.classList.remove('opacity-0', 'translate-y-8');
+                                    slide.classList.add('opacity-100', 'translate-y-0');
+                                } else {
+                                    slide.classList.add('opacity-0', 'translate-y-8');
+                                    slide.classList.remove('opacity-100', 'translate-y-0');
+                                }
+                            });
+
+                            dots.forEach((dot, i) => {
+                                if (i === index) {
+                                    dot.classList.add('w-4', 'bg-primary');
+                                    dot.classList.remove('w-1.5', 'bg-slate-200');
+                                } else {
+                                    dot.classList.remove('w-4', 'bg-primary');
+                                    dot.classList.add('w-1.5', 'bg-slate-200');
+                                }
+                            });
+
+                            statusText.textContent = statuses[index];
+                        }
+
+                        setInterval(() => {
+                            currentSlide = (currentSlide + 1) % slides.length;
+                            showSlide(currentSlide);
+                        }, 4000);
+                    });
+                </script>
             </div>
         </div>
     </section>
